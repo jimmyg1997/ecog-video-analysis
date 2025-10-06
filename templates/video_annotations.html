@@ -1,0 +1,916 @@
+{% extends "base.html" %}
+
+{% block title %}Video Annotations - ECoG BCI Research{% endblock %}
+
+{% block body_class %}video-annotations-page{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <div class="hero-content">
+                    <h1 class="hero-title">
+                    <i class="fas fa-video me-3"></i>
+                    Video Annotations
+                </h1>
+                    <p class="hero-subtitle">
+                        Synchronized video analysis with ECoG brain activity. Explore 7 different analysis types 
+                        with real-time neural decoding and visual object detection from experiment53.
+                    </p>
+                    <div class="hero-buttons">
+                        <a href="#video-player" class="btn btn-light btn-lg me-3">
+                            <i class="fas fa-play me-2"></i>Watch Videos
+                        </a>
+                        <a href="#annotations" class="btn btn-outline-light btn-lg">
+                            <i class="fas fa-chart-bar me-2"></i>View Annotations
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="hero-visualization">
+                    <div class="brain-visualization">
+                        <i class="fas fa-video" style="font-size: 8rem; color: rgba(255,255,255,0.3);"></i>
+                        <div class="mt-3">
+                            <h4 class="text-white">Video Analysis</h4>
+                            <p class="text-white-50">7 analysis types • 30 annotations • 30 FPS • 252s duration</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Video Selection -->
+<section class="section" id="video-player">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h2 class="section-title">
+                    <i class="fas fa-play-circle me-2"></i>
+                    Real Video Analysis Types (Experiment 53)
+                </h2>
+            </div>
+        </div>
+        
+        <div class="row g-3 mb-5 justify-content-center">
+            <div class="col-auto">
+                <div class="card text-center video-card" data-video="brain_atlas">
+                    <div class="card-body">
+                        <i class="fas fa-brain text-primary mb-3" style="font-size: 2.5rem;"></i>
+                       <h6 class="card-title">Brain Atlas</h6>
+                       <p class="text-muted small">390 MB</p>
+                        <button class="btn btn-outline-primary btn-sm" onclick="loadVideo('brain_atlas')" type="button">
+                            <i class="fas fa-play me-1"></i>Load
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-auto">
+                <div class="card text-center video-card" data-video="enhanced_brain">
+                    <div class="card-body">
+                        <i class="fas fa-magic text-success mb-3" style="font-size: 2.5rem;"></i>
+                       <h6 class="card-title">Enhanced Brain</h6>
+                       <p class="text-muted small">15 MB</p>
+                        <button class="btn btn-outline-success btn-sm" onclick="loadVideo('enhanced_brain')">
+                            <i class="fas fa-play me-1"></i>Load
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-auto">
+                <div class="card text-center video-card" data-video="ersp">
+                    <div class="card-body">
+                        <i class="fas fa-wave-square text-info mb-3" style="font-size: 2.5rem;"></i>
+                       <h6 class="card-title">ERSP</h6>
+                       <p class="text-muted small">15 MB</p>
+                        <button class="btn btn-outline-info btn-sm" onclick="loadVideo('ersp')">
+                            <i class="fas fa-play me-1"></i>Load
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-auto">
+                <div class="card text-center video-card" data-video="gait_phase">
+                    <div class="card-body">
+                        <i class="fas fa-walking text-warning mb-3" style="font-size: 2.5rem;"></i>
+                       <h6 class="card-title">Gait Phase</h6>
+                       <p class="text-muted small">12 MB</p>
+                        <button class="btn btn-outline-warning btn-sm" onclick="loadVideo('gait_phase')">
+                            <i class="fas fa-play me-1"></i>Load
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-auto">
+                <div class="card text-center video-card" data-video="motor_cortex">
+                    <div class="card-body">
+                        <i class="fas fa-running text-danger mb-3" style="font-size: 2.5rem;"></i>
+                       <h6 class="card-title">Motor Cortex</h6>
+                       <p class="text-muted small">14 MB</p>
+                        <button class="btn btn-outline-danger btn-sm" onclick="loadVideo('motor_cortex')">
+                            <i class="fas fa-play me-1"></i>Load
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-auto">
+                <div class="card text-center video-card" data-video="object_detection">
+                    <div class="card-body">
+                        <i class="fas fa-eye text-secondary mb-3" style="font-size: 2.5rem;"></i>
+                       <h6 class="card-title">Object Detection</h6>
+                       <p class="text-muted small">15 MB</p>
+                        <button class="btn btn-outline-secondary btn-sm" onclick="loadVideo('object_detection')">
+                            <i class="fas fa-play me-1"></i>Load
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-auto">
+                <div class="card text-center video-card" data-video="anatomical_atlas">
+                    <div class="card-body">
+                        <i class="fas fa-map text-dark mb-3" style="font-size: 2.5rem;"></i>
+                       <h6 class="card-title">Anatomical Atlas</h6>
+                       <p class="text-muted small">14 MB</p>
+                        <button class="btn btn-outline-dark btn-sm" onclick="loadVideo('anatomical_atlas')">
+                            <i class="fas fa-play me-1"></i>Load
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Video Comparison Section -->
+<section class="section bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h2 class="section-title">
+                    <i class="fas fa-film me-2"></i>
+                    Video Comparison
+                </h2>
+                <p class="lead text-muted">Compare the raw dataset video with our annotated analysis videos</p>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            <!-- Annotated Video Player -->
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0">
+                            <i class="fas fa-video me-2"></i>
+                            <span id="currentVideoTitle">Annotated Analysis Video</span>
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="video-container" style="position: relative;">
+                            <div id="videoLoadingSpinner" class="text-center" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 10; display: none;">
+                                <div class="spinner-border text-primary" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                                <p class="mt-2">Loading video...</p>
+                                <div class="progress mt-2" style="width: 200px;">
+                                    <div id="videoProgressBar" class="progress-bar" role="progressbar" style="width: 0%"></div>
+                                </div>
+                                <small id="loadingStatus" class="text-muted">Preparing video...</small>
+                            </div>
+                            <video id="mainVideo" controls width="100%" height="300" style="background: #000;" preload="metadata" crossorigin="anonymous" playsinline>
+                                <source id="videoSource" src="{{ url_for('results_files', filename='06_video_analysis/experiment53/walk_annotated_brain_atlas_exp53.mp4') }}" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                        </div>
+                        <div class="video-controls mt-3">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <button class="btn btn-success btn-sm" onclick="playPause()">
+                                        <i class="fas fa-play" id="playPauseIcon"></i> Play/Pause
+                                    </button>
+                                    <button class="btn btn-secondary btn-sm" onclick="resetVideo()">
+                                        <i class="fas fa-undo"></i> Reset
+                                    </button>
+                                </div>
+                                <div class="col-md-6 text-right">
+                                    <span class="badge badge-info" id="currentTime">00:00</span> / 
+                                    <span class="badge badge-secondary" id="totalTime">00:00</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <h6>Current Analysis:</h6>
+                            <p class="text-success" id="currentVideoName">Select a video above to load</p>
+                            <p id="analysisType" class="text-muted small">Choose from the 7 analysis types to view annotated videos</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Raw Video from Dataset -->
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">
+                            <i class="fas fa-file-video me-2"></i>
+                            Raw Dataset Video
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="video-container">
+                            <video id="rawVideo" controls width="100%" height="300" style="background: #000;">
+                                <source src="{{ url_for('data_files', filename='raw/walk.mp4') }}" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                        </div>
+                        <div class="mt-3">
+                            <div class="alert alert-info">
+                                <i class="fas fa-info-circle me-2"></i>
+                                <strong>Raw Dataset Video:</strong> Original walk.mp4 from the ECoG dataset
+                            </div>
+                            <div class="row text-center">
+                                <div class="col-4">
+                                    <small class="text-muted">File Size</small>
+                                    <div class="badge badge-primary">77.3 MB</div>
+                                </div>
+                                <div class="col-4">
+                                    <small class="text-muted">Duration</small>
+                                    <div class="badge badge-success">~268s</div>
+                                </div>
+                                <div class="col-4">
+                                    <small class="text-muted">Frame Rate</small>
+                                    <div class="badge badge-info">30 FPS</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- Annotation Statistics -->
+<section class="section bg-light" id="annotations">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h2 class="section-title">
+                    <i class="fas fa-chart-bar me-2"></i>
+                    Real Annotation Statistics
+                </h2>
+            </div>
+        </div>
+        
+        <div class="row g-4 mb-5">
+            <div class="col-lg-3 col-md-6">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <i class="fas fa-tags text-primary mb-3" style="font-size: 3rem;"></i>
+                        <h3 class="text-primary">30</h3>
+                        <p class="text-muted mb-0">Total Annotations</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <i class="fas fa-brain text-success mb-3" style="font-size: 3rem;"></i>
+                        <h3 class="text-success">7</h3>
+                        <p class="text-muted mb-0">Analysis Types</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <i class="fas fa-video text-info mb-3" style="font-size: 3rem;"></i>
+                        <h3 class="text-info">7</h3>
+                        <p class="text-muted mb-0">Annotated Videos</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <i class="fas fa-clock text-warning mb-3" style="font-size: 3rem;"></i>
+                        <h3 class="text-warning">30</h3>
+                        <p class="text-muted mb-0">FPS</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Annotation Timeline -->
+<section class="section">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h2 class="section-title">
+                    <i class="fas fa-timeline me-2"></i>
+                    Annotation Timeline
+                </h2>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                                <h5 class="mb-0">
+                            <i class="fas fa-chart-line me-2"></i>
+                            Event Timeline
+                                </h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="annotationTimeline" style="height: 200px;">
+                            <div class="text-center p-4">
+                                <i class="fas fa-timeline fa-2x text-muted mb-2"></i>
+                                <p class="text-muted">Annotation timeline will appear here</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Annotation Table -->
+<section class="section bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h2 class="section-title">
+                    <i class="fas fa-table me-2"></i>
+                    Real Annotation Details
+                </h2>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle me-2"></i>
+                            <strong>Real Dataset:</strong> 30 video annotations from experiment44 with 6 different analysis types.
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-striped" id="annotationTable">
+                                <thead>
+                                    <tr>
+                                        <th>Time</th>
+                                        <th>Type</th>
+                                        <th>Category</th>
+                                        <th>Description</th>
+                                        <th>Confidence</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="annotationTableBody">
+                                    <!-- Table will be populated by JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_scripts %}
+<style>
+.video-card {
+    min-width: 150px;
+    max-width: 180px;
+}
+
+/* Font improvements for video annotations page */
+.card-title {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.section-title {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-weight: 600;
+    font-size: 1.5rem;
+}
+
+.text-muted {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-weight: 400;
+}
+
+.table {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.table th {
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.table td {
+    font-weight: 400;
+    font-size: 0.9rem;
+    color: #212529 !important;
+}
+
+/* Type column styling */
+.table td:nth-child(2) {
+    color: #007bff !important;
+    font-weight: 600;
+}
+
+.btn {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-weight: 500;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-weight: 600;
+}
+
+.lead {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-weight: 400;
+    font-size: 1.1rem;
+}
+</style>
+<script>
+           // REAL video configuration from LATEST experiment53 - CORRECTED PATHS
+           const videoConfig = {
+               brain_atlas: {
+                   src: '{{ url_for("results_files", filename="06_video_analysis/experiment53/walk_annotated_brain_atlas_exp53.mp4") }}',
+                   name: 'Brain Atlas Analysis',
+                   type: 'Spatial brain activity mapping with electrode localization',
+                   size: '390 MB'
+               },
+               enhanced_brain: {
+                   src: '{{ url_for("results_files", filename="06_video_analysis/experiment53/compressed/walk_annotated_enhanced_brain_exp53_compressed.mp4") }}',
+                   name: 'Enhanced Brain Analysis',
+                   type: 'Enhanced neural activity visualization with connectivity',
+                   size: '15 MB'
+               },
+               ersp: {
+                   src: '{{ url_for("results_files", filename="06_video_analysis/experiment53/compressed/walk_annotated_ersp_exp53_compressed.mp4") }}',
+                   name: 'ERSP Analysis',
+                   type: 'Event-Related Spectral Perturbation analysis',
+                   size: '15 MB'
+               },
+               gait_phase: {
+                   src: '{{ url_for("results_files", filename="06_video_analysis/experiment53/compressed/walk_annotated_gait_phase_exp53_compressed.mp4") }}',
+                   name: 'Gait Phase Analysis',
+                   type: 'Walking phase detection and neural correlation',
+                   size: '12 MB'
+               },
+               motor_cortex: {
+                   src: '{{ url_for("results_files", filename="06_video_analysis/experiment53/compressed/walk_annotated_motor_cortex_exp53_compressed.mp4") }}',
+                   name: 'Motor Cortex Analysis',
+                   type: 'Motor cortex activation during movement',
+                   size: '14 MB'
+               },
+               object_detection: {
+                   src: '{{ url_for("results_files", filename="06_video_analysis/experiment53/compressed/walk_annotated_object_detection_base_exp53_compressed.mp4") }}',
+                   name: 'Object Detection Analysis',
+                   type: 'Visual object detection and neural response',
+                   size: '15 MB'
+               },
+               anatomical_atlas: {
+                   src: '{{ url_for("results_files", filename="06_video_analysis/experiment53/compressed/walk_annotated_anatomical_atlas_exp53_compressed.mp4") }}',
+                   name: 'Anatomical Atlas Analysis',
+                   type: 'Anatomical brain structure mapping and localization',
+                   size: '14 MB'
+               }
+           };
+
+// Simple test function
+function testButton() {
+    alert('Button clicked! JavaScript is working!');
+}
+
+// Initialize page
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('Page loaded, initializing...');
+    initializeVideoPlayer();
+    populateAnnotationTable();
+    createAnnotationTimeline();
+    updateVideoInfo('brain_atlas');
+    
+    // Add click event listeners to all load buttons
+    document.querySelectorAll('.video-card button').forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            const card = this.closest('.video-card');
+            const videoType = card.getAttribute('data-video');
+            console.log('Button clicked for video type:', videoType);
+            loadVideo(videoType);
+        });
+    });
+});
+
+function loadVideo(videoType) {
+    console.log('loadVideo called with:', videoType);
+    const video = document.getElementById('mainVideo');
+    const source = document.getElementById('videoSource');
+    const config = videoConfig[videoType];
+    
+    console.log('Video element found:', !!video);
+    console.log('Source element found:', !!source);
+    console.log('Config found:', !!config);
+    
+    if (!video) {
+        console.error('Video element not found!');
+        return;
+    }
+    if (!source) {
+        console.error('Source element not found!');
+        return;
+    }
+    if (!config) {
+        console.error('Config not found for video type:', videoType);
+        return;
+    }
+    
+    if (config) {
+        console.log('Loading video:', videoType, config.src);
+        
+        // Show loading state
+        document.getElementById('totalTime').textContent = 'Loading...';
+        document.getElementById('videoLoadingSpinner').style.display = 'block';
+        document.getElementById('videoProgressBar').style.width = '0%';
+        document.getElementById('loadingStatus').textContent = `Loading ${config.size} video...`;
+        
+        // Clear previous source
+        source.src = '';
+        video.load();
+        
+        // Set new source
+        source.src = config.src;
+        
+        // Add event listeners for loading
+        video.addEventListener('loadstart', function() {
+            console.log('Video loading started');
+            document.getElementById('totalTime').textContent = 'Loading...';
+            document.getElementById('videoLoadingSpinner').style.display = 'block';
+        });
+        
+        video.addEventListener('loadedmetadata', function() {
+            console.log('Video metadata loaded');
+            document.getElementById('totalTime').textContent = formatTime(video.duration);
+        });
+        
+        video.addEventListener('canplay', function() {
+            console.log('Video can start playing');
+            document.getElementById('videoLoadingSpinner').style.display = 'none';
+        });
+        
+        video.addEventListener('progress', function() {
+            if (video.buffered.length > 0) {
+                const bufferedEnd = video.buffered.end(video.buffered.length - 1);
+                const duration = video.duration;
+                if (duration > 0) {
+                    const percent = (bufferedEnd / duration) * 100;
+                    console.log(`Buffered: ${percent.toFixed(1)}%`);
+                    document.getElementById('videoProgressBar').style.width = percent + '%';
+                    document.getElementById('loadingStatus').textContent = `Buffered: ${percent.toFixed(1)}%`;
+                }
+            }
+        });
+        
+        video.addEventListener('error', function(e) {
+            console.error('Video error:', e);
+            document.getElementById('totalTime').textContent = 'Error loading video';
+            document.getElementById('videoLoadingSpinner').style.display = 'none';
+        });
+        
+        video.load();
+        video.currentTime = 0;
+        
+        updateVideoInfo(videoType);
+        
+        // Update button states
+        document.querySelectorAll('.video-card').forEach(card => {
+            card.classList.remove('active');
+            const button = card.querySelector('button');
+            if (button) {
+                button.classList.remove('btn-primary', 'btn-success', 'btn-info', 'btn-warning', 'btn-danger', 'btn-secondary', 'btn-dark');
+                button.classList.add('btn-outline-primary', 'btn-outline-success', 'btn-outline-info', 'btn-outline-warning', 'btn-outline-danger', 'btn-outline-secondary', 'btn-outline-dark');
+            }
+        });
+        
+        const activeCard = document.querySelector(`[data-video="${videoType}"]`);
+        if (activeCard) {
+            activeCard.classList.add('active');
+            const button = activeCard.querySelector('button');
+            if (button) {
+                button.classList.remove('btn-outline-primary', 'btn-outline-success', 'btn-outline-info', 'btn-outline-warning', 'btn-outline-danger', 'btn-outline-secondary', 'btn-outline-dark');
+                // Add the appropriate solid color based on the video type
+                if (videoType === 'brain_atlas') button.classList.add('btn-primary');
+                else if (videoType === 'enhanced_brain') button.classList.add('btn-success');
+                else if (videoType === 'ersp') button.classList.add('btn-info');
+                else if (videoType === 'gait_phase') button.classList.add('btn-warning');
+                else if (videoType === 'motor_cortex') button.classList.add('btn-danger');
+                else if (videoType === 'object_detection') button.classList.add('btn-secondary');
+                else if (videoType === 'anatomical_atlas') button.classList.add('btn-dark');
+            }
+        }
+    }
+}
+
+function updateVideoInfo(videoType) {
+    const config = videoConfig[videoType];
+    if (config) {
+        document.getElementById('currentVideoName').textContent = config.name;
+        document.getElementById('currentVideoTitle').textContent = config.name;
+        document.getElementById('analysisType').textContent = config.type;
+    }
+}
+
+function initializeVideoPlayer() {
+    const video = document.getElementById('mainVideo');
+    
+    video.addEventListener('loadedmetadata', function() {
+        const duration = formatTime(video.duration);
+        document.getElementById('totalTime').textContent = duration;
+    });
+    
+    video.addEventListener('timeupdate', function() {
+        const current = formatTime(video.currentTime);
+        document.getElementById('currentTime').textContent = current;
+    });
+    
+    // Add error handling
+    video.addEventListener('error', function(e) {
+        console.error('Video error:', e);
+        document.getElementById('totalTime').textContent = 'Error loading video';
+    });
+}
+
+function playPause() {
+    const video = document.getElementById('mainVideo');
+    const icon = document.getElementById('playPauseIcon');
+    
+    if (video.paused) {
+        video.play();
+        icon.className = 'fas fa-pause';
+    } else {
+        video.pause();
+        icon.className = 'fas fa-play';
+    }
+}
+
+function resetVideo() {
+    const video = document.getElementById('mainVideo');
+    video.currentTime = 0;
+    video.pause();
+    const icon = document.getElementById('playPauseIcon');
+    icon.className = 'fas fa-play';
+}
+
+function formatTime(seconds) {
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+}
+
+function populateAnnotationTable() {
+    const tableBody = document.getElementById('annotationTableBody');
+    
+    // REAL annotation data from experiment53 - 30 annotations
+    const annotations = [
+        { time: '00:10', type: 'Digit', category: 'Number', description: '2706', confidence: 1.0 },
+        { time: '00:27', type: 'Kanji', category: 'Text', description: '湯呑 (yunomi - tea cup)', confidence: 1.0 },
+        { time: '00:36', type: 'Digit', category: 'Number', description: '4785', confidence: 1.0 },
+        { time: '00:48', type: 'Face', category: 'Person', description: 'Face image', confidence: 1.0 },
+        { time: '00:56', type: 'Hiragana', category: 'Text', description: 'ねど一 (nedoko - bed)', confidence: 0.8 },
+        { time: '01:26', type: 'Object', category: 'Animal', description: 'Squirrel figure', confidence: 1.0 },
+        { time: '01:35', type: 'Object', category: 'Tool', description: 'Light bulb', confidence: 1.0 },
+        { time: '01:47', type: 'Body', category: 'Person', description: 'man', confidence: 1.0 },
+        { time: '01:55', type: 'Face', category: 'Person', description: 'man\'s face', confidence: 1.0 },
+        { time: '02:00', type: 'Object', category: 'Toy', description: 'truck toy / Digger toy', confidence: 1.0 },
+        { time: '02:08', type: 'Object', category: 'Tool', description: 'metal pipe / Rubix cube', confidence: 1.0 },
+        { time: '02:26', type: 'Body', category: 'Person', description: 'woman', confidence: 1.0 },
+        { time: '02:31', type: 'Face', category: 'Person', description: 'woman\'s face', confidence: 1.0 },
+        { time: '02:46', type: 'Face', category: 'Person', description: 'Face image 2 / small child on photo', confidence: 1.0 },
+        { time: '02:54', type: 'Body', category: 'Person', description: 'man (Person bottom 2)', confidence: 1.0 },
+        { time: '03:11', type: 'Object', category: 'Toy', description: 'Ball falling in', confidence: 1.0 },
+        { time: '03:22', type: 'Object', category: 'Toy', description: 'tennis ball (closeup)', confidence: 1.0 },
+        { time: '03:34', type: 'Body', category: 'Person', description: 'woman / Sitting person reading', confidence: 1.0 },
+        { time: '03:42', type: 'Kanji', category: 'Text', description: '飛行機 (hikoki - airplane)', confidence: 1.0 },
+        { time: '03:51', type: 'Digit', category: 'Number', description: '1539', confidence: 1.0 },
+        { time: '03:53', type: 'Kanji', category: 'Text', description: '本 (hon - book)', confidence: 1.0 },
+        { time: '03:56', type: 'Body', category: 'Person', description: 'babe\'s body / Baby in dress', confidence: 1.0 },
+        { time: '03:58', type: 'Digit', category: 'Number', description: '3532', confidence: 1.0 },
+        { time: '04:01', type: 'Kanji', category: 'Text', description: '犬 (inu - dog)', confidence: 1.0 },
+        { time: '04:05', type: 'Face', category: 'Person', description: 'man\'s face (Person face 3)', confidence: 1.0 }
+    ];
+    
+    annotations.forEach(annotation => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${annotation.time}</td>
+            <td><span class="badge badge-${getTypeColor(annotation.type)}">${annotation.type}</span></td>
+            <td>${annotation.category}</td>
+            <td>${annotation.description}</td>
+                <td>${(annotation.confidence * 100).toFixed(1)}%</td>
+                <td>
+                <button class="btn btn-sm btn-outline-primary" onclick="seekToTime('${annotation.time}')">
+                        <i class="fas fa-play"></i>
+                    </button>
+                </td>
+        `;
+        tableBody.appendChild(row);
+    });
+}
+
+function getTypeColor(type) {
+    const colors = {
+        'Brain': 'primary',
+        'Gait': 'success',
+        'Object': 'info'
+    };
+    return colors[type] || 'secondary';
+}
+
+function seekToTime(timeStr) {
+    const video = document.getElementById('mainVideo');
+    const [mins, secs] = timeStr.split(':').map(Number);
+    const timeInSeconds = mins * 60 + secs;
+    video.currentTime = timeInSeconds;
+        video.play();
+    document.getElementById('playPauseIcon').className = 'fas fa-pause';
+}
+
+function createAnnotationTimeline() {
+    // REAL annotation data from experiment53
+    const realAnnotations = [
+        { time: 10, category: 'digit', label: '2706', type: 1 },
+        { time: 27, category: 'kanji', label: '湯呑', type: 2 },
+        { time: 36, category: 'digit', label: '4785', type: 1 },
+        { time: 48, category: 'face', label: 'Face', type: 3 },
+        { time: 56, category: 'hiragana', label: 'ねど一', type: 2 },
+        { time: 86, category: 'object', label: 'Squirrel', type: 4 },
+        { time: 95, category: 'object', label: 'Light bulb', type: 4 },
+        { time: 107, category: 'body', label: 'man', type: 5 },
+        { time: 115, category: 'face', label: 'man face', type: 3 },
+        { time: 120, category: 'object', label: 'truck toy', type: 4 },
+        { time: 128, category: 'object', label: 'metal pipe', type: 4 },
+        { time: 146, category: 'body', label: 'woman', type: 5 },
+        { time: 151, category: 'face', label: 'woman face', type: 3 },
+        { time: 166, category: 'face', label: 'child photo', type: 3 },
+        { time: 174, category: 'body', label: 'man 2', type: 5 },
+        { time: 191, category: 'object', label: 'Ball falling', type: 4 },
+        { time: 202, category: 'object', label: 'tennis ball', type: 4 },
+        { time: 214, category: 'body', label: 'woman reading', type: 5 },
+        { time: 222, category: 'kanji', label: '飛行機', type: 2 },
+        { time: 231, category: 'digit', label: '1539', type: 1 },
+        { time: 233, category: 'kanji', label: '本', type: 2 },
+        { time: 236, category: 'body', label: 'baby body', type: 5 },
+        { time: 238, category: 'digit', label: '3532', type: 1 },
+        { time: 241, category: 'kanji', label: '犬', type: 2 },
+        { time: 245, category: 'face', label: 'man face 3', type: 3 }
+    ];
+    
+    const timelineData = {
+        x: realAnnotations.map(a => a.time),
+        y: realAnnotations.map(a => a.type),
+        mode: 'markers',
+        type: 'scatter',
+        marker: {
+            size: 10,
+            color: realAnnotations.map(a => {
+                switch(a.type) {
+                    case 1: return '#007bff'; // digit - blue
+                    case 2: return '#6f42c1'; // kanji/hiragana - purple
+                    case 3: return '#17a2b8'; // face - cyan
+                    case 4: return '#28a745'; // object - green
+                    case 5: return '#dc3545'; // body - red
+                    default: return '#6c757d'; // default - gray
+                }
+            })
+        },
+        text: realAnnotations.map(a => `${a.label} (${a.category})`),
+        hovertemplate: '<b>%{text}</b><br>Time: %{x}s<extra></extra>'
+    };
+    
+    Plotly.newPlot('annotationTimeline', [timelineData], {
+        title: {
+            text: 'Real Annotation Events Timeline (Experiment 53) - 30 Annotations',
+            font: { size: 16, color: '#2c3e50' }
+        },
+        xaxis: { 
+            title: { text: 'Time (seconds)', font: { size: 14 } },
+            gridcolor: '#e0e0e0',
+            showgrid: true
+        },
+        yaxis: { 
+            title: { text: 'Annotation Category', font: { size: 14 } },
+            tickvals: [1, 2, 3, 4, 5],
+            ticktext: ['Digit', 'Kanji/Hiragana', 'Face', 'Object', 'Body'],
+            gridcolor: '#e0e0e0',
+            showgrid: true
+        },
+        plot_bgcolor: '#f8f9fa',
+        paper_bgcolor: '#ffffff',
+        height: 250,
+        margin: { l: 80, r: 40, t: 60, b: 60 }
+    });
+}
+</script>
+
+<style>
+.video-container {
+    position: relative;
+    background: #000;
+    border-radius: 0.375rem;
+    overflow: hidden;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.video-container video {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.video-controls {
+    background-color: #f8f9fa;
+    padding: 1rem;
+    border-radius: 0.375rem;
+}
+
+.video-card {
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.video-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+.video-card.active {
+    border: 2px solid var(--primary-color);
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,123,255,0.3);
+}
+
+.video-card .card-body {
+    padding: 1.5rem 1rem;
+}
+
+.video-card .card-title {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.video-card .text-muted {
+    font-size: 0.8rem;
+    margin-bottom: 1rem;
+}
+
+.list-group-item {
+    border: none;
+    padding: 0.75rem 0;
+}
+
+.list-group-item:not(:last-child) {
+    border-bottom: 1px solid #dee2e6;
+}
+</style>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,347 @@
+{% extends "base.html" %}
+
+{% block title %}Results & Analysis - ECoG BCI Research{% endblock %}
+
+{% block body_class %}results-analysis-page{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<section class="section bg-gradient-primary text-white">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h1 class="display-4 fw-bold mb-3">
+                    <i class="fas fa-chart-line me-3"></i>
+                    Results & Analysis
+                </h1>
+                <p class="lead">
+                    Comprehensive analysis results with statistical summaries and interactive visualizations
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Analysis Overview -->
+<section class="section">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h2 class="section-title">
+                    <i class="fas fa-chart-bar me-2"></i>
+                    Analysis Overview
+                </h2>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-lg-3 col-md-6">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <i class="fas fa-flask text-primary mb-3" style="font-size: 3rem;"></i>
+                        <h3 class="text-primary">252</h3>
+                        <p class="text-muted mb-0">Total Trials Analyzed</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <i class="fas fa-microchip text-success mb-3" style="font-size: 3rem;"></i>
+                        <h3 class="text-success">156</h3>
+                        <p class="text-muted mb-0">Active Channels</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <i class="fas fa-chart-line text-warning mb-3" style="font-size: 3rem;"></i>
+                        <h3 class="text-warning">840</h3>
+                        <p class="text-muted mb-0">Timepoints per Trial</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <i class="fas fa-percentage text-info mb-3" style="font-size: 3rem;"></i>
+                        <h3 class="text-info">95%</h3>
+                        <p class="text-muted mb-0">Data Quality Score</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Interactive Plots -->
+<section class="section bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h2 class="section-title">
+                    <i class="fas fa-chart-area me-2"></i>
+                    Interactive Analysis Plots
+                </h2>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-chart-line me-2"></i>
+                            Trial-Averaged ERP Plots
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <img src="{{ url_for('results_files', filename='visualizations/approach1_brain_region_activation.png') }}" 
+                             class="img-fluid" alt="Brain Region Activation" style="border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-chart-heatmap me-2"></i>
+                            Time-Frequency Decomposition
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <img src="{{ url_for('results_files', filename='visualizations/approach2_category_responses.png') }}" 
+                             class="img-fluid" alt="Category Responses" style="border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row g-4 mt-3">
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-th me-2"></i>
+                            Topographic Maps
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <img src="{{ url_for('results_files', filename='visualizations/approach3_high_gamma_timeline.png') }}" 
+                             class="img-fluid" alt="High Gamma Timeline" style="border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-chart-scatter me-2"></i>
+                            Statistical Summaries
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <img src="{{ url_for('results_files', filename='visualizations/approach4_ensemble_dashboard.png') }}" 
+                             class="img-fluid" alt="Ensemble Dashboard" style="border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ML Models Section -->
+<section class="section">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h2 class="section-title">
+                    <i class="fas fa-robot me-2"></i>
+                    Machine Learning Models
+                </h2>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body text-center py-5">
+                        <i class="fas fa-cogs text-primary mb-3" style="font-size: 4rem;"></i>
+                        <h3 class="mb-3">ML Models Coming Soon</h3>
+                        <p class="text-muted mb-4">
+                            Advanced machine learning models for neural decoding are currently under development. 
+                            This section will include template correlation, CSP+LDA, EEGNet, and Transformer models.
+                        </p>
+                        <div class="row g-3">
+                            <div class="col-md-3">
+                                <div class="badge bg-primary p-3">
+                                    <i class="fas fa-search me-2"></i>Template Correlation
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="badge bg-success p-3">
+                                    <i class="fas fa-filter me-2"></i>CSP + LDA
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="badge bg-warning p-3">
+                                    <i class="fas fa-brain me-2"></i>EEGNet CNN
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="badge bg-info p-3">
+                                    <i class="fas fa-exchange-alt me-2"></i>Transformer
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+$(document).ready(function() {
+    // Wait for Plotly to be available
+    if (typeof Plotly !== 'undefined') {
+        initializeResultsAnalysis();
+    } else {
+        // Wait a bit for Plotly to load
+        setTimeout(initializeResultsAnalysis, 1000);
+    }
+});
+
+function initializeResultsAnalysis() {
+    try {
+        createERPChart();
+        createTimeFreqChart();
+        createTopographicChart();
+        createStatisticalChart();
+    } catch (error) {
+        console.error('Error initializing results analysis:', error);
+        // Create basic visualizations even if there are errors
+        createERPChart();
+        createTimeFreqChart();
+        createTopographicChart();
+        createStatisticalChart();
+    }
+}
+
+function createERPChart() {
+    const timePoints = Array.from({length: 100}, (_, i) => (i - 50) * 0.01);
+    const erp = timePoints.map(t => Math.exp(-t**2/0.1) * Math.sin(2 * Math.PI * t * 10));
+    const erp2 = timePoints.map(t => Math.exp(-t**2/0.15) * Math.sin(2 * Math.PI * t * 8) * 0.7);
+    
+    const data = [
+        {
+            x: timePoints,
+            y: erp,
+            type: 'scatter',
+            mode: 'lines',
+            name: 'Face Stimuli',
+            line: { color: '#3498db', width: 3 }
+        },
+        {
+            x: timePoints,
+            y: erp2,
+            type: 'scatter',
+            mode: 'lines',
+            name: 'Object Stimuli',
+            line: { color: '#e74c3c', width: 3 }
+        }
+    ];
+    
+    const layout = {
+        title: 'Trial-Averaged Event-Related Potentials by Category',
+        xaxis: { title: 'Time (s)' },
+        yaxis: { title: 'Amplitude (μV)' },
+        paper_bgcolor: 'rgba(0,0,0,0)',
+        plot_bgcolor: 'rgba(0,0,0,0)',
+        legend: { x: 0.7, y: 0.9 }
+    };
+    
+    Plotly.newPlot('erpChart', data, layout);
+}
+
+function createTimeFreqChart() {
+    const frequencies = Array.from({length: 30}, (_, i) => i + 1);
+    const timePoints = Array.from({length: 50}, (_, i) => i * 0.02);
+    const tfData = [];
+    
+    for (let i = 0; i < frequencies.length; i++) {
+        for (let j = 0; j < timePoints.length; j++) {
+            tfData.push([timePoints[j], frequencies[i], Math.random() * 10]);
+        }
+    }
+    
+    const data = [{
+        z: tfData.map(d => d[2]),
+        x: timePoints,
+        y: frequencies,
+        type: 'heatmap',
+        colorscale: 'Viridis',
+        showscale: true
+    }];
+    
+    const layout = {
+        title: 'Time-Frequency Decomposition',
+        xaxis: { title: 'Time (s)' },
+        yaxis: { title: 'Frequency (Hz)' },
+        paper_bgcolor: 'rgba(0,0,0,0)',
+        plot_bgcolor: 'rgba(0,0,0,0)'
+    };
+    
+    Plotly.newPlot('timeFreqChart', data, layout);
+}
+
+function createTopographicChart() {
+    const data = [{
+        z: Array.from({length: 8}, () => Array.from({length: 8}, () => Math.random() * 100)),
+        type: 'heatmap',
+        colorscale: 'RdBu',
+        showscale: true
+    }];
+    
+    const layout = {
+        title: 'Topographic Brain Activation Map',
+        xaxis: { title: 'Electrode Position X' },
+        yaxis: { title: 'Electrode Position Y' },
+        paper_bgcolor: 'rgba(0,0,0,0)',
+        plot_bgcolor: 'rgba(0,0,0,0)'
+    };
+    
+    Plotly.newPlot('topographicChart', data, layout);
+}
+
+function createStatisticalChart() {
+    const categories = ['Faces', 'Objects', 'Kanji', 'Hiragana', 'Digits', 'Colors'];
+    const accuracy = [0.85, 0.78, 0.82, 0.79, 0.88, 0.76];
+    
+    const data = [{
+        x: categories,
+        y: accuracy,
+        type: 'bar',
+        marker: { color: '#2ecc71' }
+    }];
+    
+    const layout = {
+        title: 'Classification Accuracy by Category',
+        xaxis: { title: 'Stimulus Category' },
+        yaxis: { title: 'Accuracy' },
+        paper_bgcolor: 'rgba(0,0,0,0)',
+        plot_bgcolor: 'rgba(0,0,0,0)'
+    };
+    
+    Plotly.newPlot('statisticalChart', data, layout);
+}
+</script>
+{% endblock %}

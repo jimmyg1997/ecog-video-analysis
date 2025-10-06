@@ -1,0 +1,1084 @@
+{% extends "base.html" %}
+
+{% block title %}ECoG Visualization - ECoG BCI Research{% endblock %}
+
+{% block body_class %}ecog-visualization-page{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<section class="section bg-gradient-primary text-white">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h1 class="display-4 fw-bold mb-3">
+                    <i class="fas fa-brain me-3"></i>
+                    Real-Time ECoG Visualization
+                </h1>
+                <p class="lead">
+                    Interactive brain activity visualization with spatial motor cortex mapping and neural signatures
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Visualization Controls -->
+<section class="section">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-sliders-h me-2"></i>
+                            Visualization Controls
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-lg-3 col-md-6">
+                                <label class="form-label">Visualization Mode:</label>
+                                <select class="form-select" id="visualizationMode">
+                                    <option value="spatial">Spatial Motor Cortex Activation</option>
+                                    <option value="gait">Gait-Phase Neural Signature</option>
+                                    <option value="ersp">Event-Related Spectral Perturbation</option>
+                                </select>
+                            </div>
+                            
+                            <div class="col-lg-3 col-md-6">
+                                <label class="form-label">Trial Selection:</label>
+                                <select class="form-select" id="trialSelection">
+                                    <option value="all">All Trials (Averaged)</option>
+                                    <option value="single">Single Trial</option>
+                                    <option value="category">By Category</option>
+                                </select>
+                            </div>
+                            
+                            <div class="col-lg-3 col-md-6">
+                                <label class="form-label">Time Window:</label>
+                                <select class="form-select" id="timeWindow">
+                                    <option value="full">Full Trial (-300ms to +400ms)</option>
+                                    <option value="early">Early Response (0ms to +200ms)</option>
+                                    <option value="late">Late Response (+200ms to +400ms)</option>
+                                </select>
+                            </div>
+                            
+                            <div class="col-lg-3 col-md-6">
+                                <label class="form-label">Frequency Band:</label>
+                                <select class="form-select" id="frequencyBand">
+                                    <option value="gamma">Gamma (110-140 Hz)</option>
+                                    <option value="beta">Beta (13-30 Hz)</option>
+                                    <option value="alpha">Alpha (8-13 Hz)</option>
+                                    <option value="theta">Theta (4-8 Hz)</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="row g-3 mt-2">
+                            <div class="col-lg-4 col-md-6">
+                                <label class="form-label">Single Trial ID:</label>
+                                <input type="number" class="form-control" id="trialId" min="0" max="251" value="0" disabled>
+                            </div>
+                            
+                            <div class="col-lg-4 col-md-6">
+                                <label class="form-label">Time Point (ms):</label>
+                                <input type="range" class="form-range" id="timeSlider" min="-300" max="400" value="0">
+                                <div class="d-flex justify-content-between">
+                                    <small>-300ms</small>
+                                    <small id="currentTime">0ms</small>
+                                    <small>+400ms</small>
+                                </div>
+                            </div>
+                            
+                            <div class="col-lg-4 col-md-6">
+                                <div class="d-flex align-items-end h-100">
+                                    <button class="btn btn-primary me-2" id="playAnimation">
+                                        <i class="fas fa-play"></i> Play
+                                    </button>
+                                    <button class="btn btn-outline-secondary" id="resetView">
+                                        <i class="fas fa-undo"></i> Reset
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Main Visualization Area -->
+<section class="section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-brain me-2"></i>
+                            <span id="visualizationTitle">Spatial Motor Cortex Activation Map</span>
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="mainVisualization" class="visualization-container">
+                            <div id="svgContainer" style="width: 100%; height: 500px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); overflow: hidden; position: relative;">
+                                <svg id="mainSVG" width="100%" height="100%" viewBox="0 0 800 600" style="cursor: grab;">
+                                    <!-- SVG content will be loaded here -->
+                                </svg>
+                                <div id="svgFallback" style="display: none;">
+                                    <img src="{{ url_for('results_files', filename='visualizations/experiment1/analysis/04_brain_activation_maps.png') }}" 
+                                         class="img-fluid" alt="Spatial Motor Cortex Activation Map" style="border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-microchip me-2"></i>
+                            Electrode Selection
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="electrodeGrid" class="electrode-grid-container">
+                            <!-- Electrode grid will be populated by JavaScript -->
+                        </div>
+                        <div class="mt-3">
+                            <button class="btn btn-outline-primary btn-sm me-2" id="selectAllGood">
+                                <i class="fas fa-check-double me-1"></i>Select All Good
+                            </button>
+                            <button class="btn btn-outline-secondary btn-sm" id="clearSelection">
+                                <i class="fas fa-times me-1"></i>Clear
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card mt-3">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-chart-line me-2"></i>
+                            Selected Channel Signal
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="channelSignal" class="plotly-chart" style="height: 300px;">
+                            <!-- Channel signal plot will be rendered here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Additional Visualizations -->
+<section class="section bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h2 class="section-title">
+                    <i class="fas fa-chart-area me-2"></i>
+                    Additional Analysis Views
+                </h2>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-chart-line me-2"></i>
+                            Time-Frequency Analysis
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="timeFrequencyChart" class="plotly-chart" style="height: 400px;">
+                            <!-- Time-frequency plot will be rendered here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-chart-bar me-2"></i>
+                            Power Spectral Density
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="powerSpectralChart" class="plotly-chart" style="height: 400px;">
+                            <!-- Power spectral plot will be rendered here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row g-4 mt-3">
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-chart-scatter me-2"></i>
+                            ERP Waveforms
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="erpChart" class="plotly-chart" style="height: 400px;">
+                            <!-- ERP plot will be rendered here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-chart-heatmap me-2"></i>
+                            Topographic Map
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="topographicChart" class="plotly-chart" style="height: 400px;">
+                            <!-- Topographic map will be rendered here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Video Synchronization -->
+<section class="section">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h2 class="section-title">
+                    <i class="fas fa-video me-2"></i>
+                    Video Synchronization
+                </h2>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-video me-2"></i>
+                            Synchronized Video Playback
+                        </h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="video-container">
+                            <video id="syncVideo" controls preload="metadata" style="width: 100%; height: auto;">
+                                <source src="{{ url_for('data_files', filename='raw/walk.mp4') }}" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-sync me-2"></i>
+                            Synchronization Controls
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label class="form-label">Sync Mode:</label>
+                            <select class="form-select" id="syncMode">
+                                <option value="manual">Manual Sync</option>
+                                <option value="auto">Auto Sync</option>
+                                <option value="off">No Sync</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Video Time Offset:</label>
+                            <input type="number" class="form-control" id="videoOffset" value="0" step="0.1">
+                            <small class="text-muted">Seconds to offset video from ECoG data</small>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <button class="btn btn-primary w-100" id="syncNow">
+                                <i class="fas fa-sync me-1"></i>Sync Now
+                            </button>
+                        </div>
+                        
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle me-2"></i>
+                            <strong>Sync Status:</strong>
+                            <div id="syncStatus">Not synchronized</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Export and Analysis Options -->
+<section class="section bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h2 class="section-title">
+                    <i class="fas fa-download me-2"></i>
+                    Export and Analysis
+                </h2>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-lg-3 col-md-6">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <i class="fas fa-image text-primary mb-3" style="font-size: 3rem;"></i>
+                        <h5>Export Visualization</h5>
+                        <p class="text-muted">Save current visualization as PNG or SVG</p>
+                        <button class="btn btn-primary" id="exportVisualization">
+                            <i class="fas fa-download me-1"></i>Export
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <i class="fas fa-file-csv text-success mb-3" style="font-size: 3rem;"></i>
+                        <h5>Export Data</h5>
+                        <p class="text-muted">Export selected channel data as CSV</p>
+                        <button class="btn btn-success" id="exportData">
+                            <i class="fas fa-download me-1"></i>Export CSV
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <i class="fas fa-chart-line text-warning mb-3" style="font-size: 3rem;"></i>
+                        <h5>Statistical Analysis</h5>
+                        <p class="text-muted">Perform statistical analysis on selected data</p>
+                        <button class="btn btn-warning" id="statisticalAnalysis">
+                            <i class="fas fa-calculator me-1"></i>Analyze
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <i class="fas fa-cog text-info mb-3" style="font-size: 3rem;"></i>
+                        <h5>Advanced Settings</h5>
+                        <p class="text-muted">Configure advanced visualization parameters</p>
+                        <button class="btn btn-info" id="advancedSettings">
+                            <i class="fas fa-cog me-1"></i>Settings
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+$(document).ready(function() {
+    // Wait for Plotly to be available
+    if (typeof Plotly !== 'undefined') {
+        initializeECoGVisualization();
+    } else {
+        // Wait a bit for Plotly to load
+        setTimeout(initializeECoGVisualization, 1000);
+    }
+});
+
+let electrodeGrid = null;
+let currentVisualization = 'spatial';
+let selectedElectrodes = [];
+let currentTrial = 0;
+let currentTime = 0;
+let animationInterval = null;
+let syncVideo = null;
+
+async function initializeECoGVisualization() {
+    try {
+        // Initialize electrode grid
+        initializeElectrodeGrid();
+        
+        // Setup event handlers
+        setupEventHandlers();
+        
+        // Initialize main visualization
+        setTimeout(updateMainVisualization, 500);
+        
+        // Initialize visualizations
+        await initializeVisualizations();
+        
+        // Initialize video synchronization
+        initializeVideoSync();
+        
+        ECoGApp.showSuccess('ECoG visualization initialized successfully!');
+        
+    } catch (error) {
+        console.error('Failed to initialize ECoG visualization:', error);
+        // Initialize with mock data
+        initializeElectrodeGrid();
+        setupEventHandlers();
+        initializeVisualizations();
+        initializeVideoSync();
+        ECoGApp.showSuccess('ECoG visualization initialized with demo data!');
+    }
+}
+
+function initializeElectrodeGrid() {
+    electrodeGrid = new ECoGApp.ElectrodeGrid('electrodeGrid', {
+        totalChannels: 160,
+        goodChannels: 156,
+        badChannels: 4
+    });
+    
+    // Listen for electrode selection changes
+    document.getElementById('electrodeGrid').addEventListener('electrodeSelectionChanged', function(event) {
+        selectedElectrodes = event.detail.selectedElectrodes;
+        updateChannelSignal();
+        updateMainVisualization();
+    });
+}
+
+function setupEventHandlers() {
+    // Visualization mode change
+    $('#visualizationMode').change(function() {
+        currentVisualization = $(this).val();
+        updateVisualizationTitle();
+        updateMainVisualization();
+    });
+    
+    // Trial selection change
+    $('#trialSelection').change(function() {
+        const mode = $(this).val();
+        $('#trialId').prop('disabled', mode !== 'single');
+        updateMainVisualization();
+    });
+    
+    // Time slider
+    $('#timeSlider').on('input', function() {
+        currentTime = parseInt($(this).val());
+        $('#currentTime').text(currentTime + 'ms');
+        updateMainVisualization();
+    });
+    
+    // Trial ID input
+    $('#trialId').on('input', function() {
+        currentTrial = parseInt($(this).val());
+        updateMainVisualization();
+    });
+    
+    // Play animation
+    $('#playAnimation').click(function() {
+        if (animationInterval) {
+            stopAnimation();
+        } else {
+            startAnimation();
+        }
+    });
+    
+    // Reset view
+    $('#resetView').click(function() {
+        resetVisualization();
+    });
+    
+    // Electrode grid controls
+    $('#selectAllGood').click(function() {
+        electrodeGrid.clearSelection();
+        for (let i = 0; i < 156; i++) {
+            const electrode = document.querySelector(`[data-channel-id="${i}"]`);
+            if (electrode) {
+                electrodeGrid.toggleElectrode(electrode);
+            }
+        }
+    });
+    
+    $('#clearSelection').click(function() {
+        electrodeGrid.clearSelection();
+    });
+    
+    // Export functionality
+    $('#exportVisualization').click(function() {
+        exportVisualization();
+    });
+    
+    $('#exportData').click(function() {
+        exportSelectedData();
+    });
+    
+    $('#statisticalAnalysis').click(function() {
+        performStatisticalAnalysis();
+    });
+    
+    $('#advancedSettings').click(function() {
+        showAdvancedSettings();
+    });
+}
+
+async function initializeVisualizations() {
+    // Initialize main visualization
+    updateMainVisualization();
+    
+    // Initialize additional charts
+    createTimeFrequencyChart();
+    createPowerSpectralChart();
+    createERPChart();
+    createTopographicChart();
+}
+
+function updateVisualizationTitle() {
+    const titles = {
+        'spatial': 'Spatial Motor Cortex Activation Map',
+        'gait': 'Gait-Phase Neural Signature Timeline',
+        'ersp': 'Event-Related Spectral Perturbation (ERSP)'
+    };
+    $('#visualizationTitle').text(titles[currentVisualization]);
+}
+
+function updateMainVisualization() {
+    const svgContainer = document.getElementById('svgContainer');
+    const mainSVG = document.getElementById('mainSVG');
+    const svgFallback = document.getElementById('svgFallback');
+    const title = document.getElementById('visualizationTitle');
+    
+    const visualizations = {
+        'spatial': {
+            title: 'Spatial Motor Cortex Activation Map',
+            svg: "{{ url_for('results_files', filename='visualizations/experiment1/analysis/04_brain_activation_maps.svg') }}",
+            fallback: "{{ url_for('results_files', filename='visualizations/experiment1/analysis/04_brain_activation_maps.png') }}"
+        },
+        'gait': {
+            title: 'Gait-Phase Neural Signature',
+            svg: "{{ url_for('results_files', filename='visualizations/experiment1/03_individual_plots/07_activity_vs_timeline.svg') }}",
+            fallback: "{{ url_for('results_files', filename='visualizations/experiment1/03_individual_plots/07_activity_vs_timeline.png') }}"
+        },
+        'ersp': {
+            title: 'Event-Related Spectral Perturbation (ERSP)',
+            svg: "{{ url_for('results_files', filename='visualizations/experiment1/03_individual_plots/05_psd_comparison.svg') }}",
+            fallback: "{{ url_for('results_files', filename='visualizations/experiment1/03_individual_plots/05_psd_comparison.png') }}"
+        }
+    };
+    
+    const viz = visualizations[currentVisualization];
+    if (viz) {
+        title.textContent = viz.title;
+        
+        // Try to load SVG
+        console.log('Loading SVG from:', viz.svg);
+        fetch(viz.svg)
+            .then(response => {
+                console.log('SVG response status:', response.status);
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                return response.text();
+            })
+            .then(svgText => {
+                console.log('SVG loaded successfully, length:', svgText.length);
+                mainSVG.innerHTML = svgText;
+                mainSVG.style.display = 'block';
+                svgFallback.style.display = 'none';
+                makeSVGInteractive();
+                console.log('SVG displayed and made interactive');
+            })
+            .catch(error => {
+                console.error('Failed to load SVG:', error);
+                console.log('Falling back to PNG:', viz.fallback);
+                // Fallback to PNG
+                const fallbackImg = svgFallback.querySelector('img');
+                if (fallbackImg) {
+                    fallbackImg.src = viz.fallback;
+                    fallbackImg.alt = viz.title;
+                }
+                mainSVG.style.display = 'none';
+                svgFallback.style.display = 'block';
+            });
+    }
+}
+
+function makeSVGInteractive() {
+    const svg = document.getElementById('mainSVG');
+    if (!svg) return;
+    
+    // Add zoom and pan functionality
+    let isPanning = false;
+    let startPoint = { x: 0, y: 0 };
+    let endPoint = { x: 0, y: 0 };
+    let scale = 1;
+    let translate = { x: 0, y: 0 };
+    
+    // Mouse wheel zoom
+    svg.addEventListener('wheel', (e) => {
+        e.preventDefault();
+        const rect = svg.getBoundingClientRect();
+        const mouseX = e.clientX - rect.left;
+        const mouseY = e.clientY - rect.top;
+        
+        const delta = e.deltaY > 0 ? 0.9 : 1.1;
+        scale *= delta;
+        scale = Math.max(0.1, Math.min(5, scale));
+        
+        // Zoom towards mouse position
+        translate.x = mouseX - (mouseX - translate.x) * delta;
+        translate.y = mouseY - (mouseY - translate.y) * delta;
+        
+        updateTransform();
+    });
+    
+    // Pan functionality
+    svg.addEventListener('mousedown', (e) => {
+        isPanning = true;
+        startPoint = { x: e.clientX - translate.x, y: e.clientY - translate.y };
+        svg.style.cursor = 'grabbing';
+    });
+    
+    svg.addEventListener('mousemove', (e) => {
+        if (isPanning) {
+            endPoint = { x: e.clientX, y: e.clientY };
+            translate.x = endPoint.x - startPoint.x;
+            translate.y = endPoint.y - startPoint.y;
+            updateTransform();
+        }
+    });
+    
+    svg.addEventListener('mouseup', () => {
+        isPanning = false;
+        svg.style.cursor = 'grab';
+    });
+    
+    svg.addEventListener('mouseleave', () => {
+        isPanning = false;
+        svg.style.cursor = 'grab';
+    });
+    
+    function updateTransform() {
+        svg.style.transform = `translate(${translate.x}px, ${translate.y}px) scale(${scale})`;
+    }
+    
+    // Add hover effects to SVG elements
+    const elements = svg.querySelectorAll('path, circle, rect, text');
+    elements.forEach(element => {
+        element.addEventListener('mouseenter', (e) => {
+            e.target.style.opacity = '0.8';
+            e.target.style.strokeWidth = '2';
+        });
+        
+        element.addEventListener('mouseleave', (e) => {
+            e.target.style.opacity = '1';
+            e.target.style.strokeWidth = '1';
+        });
+    });
+}
+
+function createSpatialVisualization(container) {
+    // Create a realistic spatial activation map
+    const data = [{
+        z: generateRealisticTopographicData(),
+        type: 'heatmap',
+        colorscale: 'RdBu',
+        showscale: true,
+        hoverongaps: false
+    }];
+    
+    const layout = {
+        title: 'Spatial Motor Cortex Activation Map',
+        xaxis: { title: 'Electrode Position X (mm)' },
+        yaxis: { title: 'Electrode Position Y (mm)' },
+        paper_bgcolor: 'rgba(0,0,0,0)',
+        plot_bgcolor: 'rgba(0,0,0,0)',
+        font: { size: 12 }
+    };
+    
+    Plotly.newPlot(container, data, layout);
+}
+
+function createGaitVisualization(container) {
+    // Create a mock gait-phase visualization
+    const timePoints = Array.from({length: 100}, (_, i) => i * 0.01);
+    const gaitData = timePoints.map(t => Math.sin(2 * Math.PI * t) * Math.exp(-t/2));
+    
+    const data = [{
+        x: timePoints,
+        y: gaitData,
+        type: 'scatter',
+        mode: 'lines',
+        name: 'Gait Phase',
+        line: { color: '#3498db', width: 3 }
+    }];
+    
+    const layout = {
+        title: 'Gait-Phase Neural Signature',
+        xaxis: { title: 'Time (s)' },
+        yaxis: { title: 'Neural Activity (μV)' },
+        paper_bgcolor: 'rgba(0,0,0,0)',
+        plot_bgcolor: 'rgba(0,0,0,0)'
+    };
+    
+    Plotly.newPlot(container, data, layout);
+}
+
+function createERSPVisualization(container) {
+    // Create a mock ERSP visualization
+    const frequencies = Array.from({length: 50}, (_, i) => i * 2);
+    const timePoints = Array.from({length: 100}, (_, i) => i * 0.01);
+    const erspData = [];
+    
+    for (let i = 0; i < frequencies.length; i++) {
+        for (let j = 0; j < timePoints.length; j++) {
+            erspData.push([timePoints[j], frequencies[i], Math.random() * 2 - 1]);
+        }
+    }
+    
+    const data = [{
+        z: erspData.map(d => d[2]),
+        x: timePoints,
+        y: frequencies,
+        type: 'heatmap',
+        colorscale: 'RdBu',
+        showscale: true
+    }];
+    
+    const layout = {
+        title: 'Event-Related Spectral Perturbation',
+        xaxis: { title: 'Time (s)' },
+        yaxis: { title: 'Frequency (Hz)' },
+        paper_bgcolor: 'rgba(0,0,0,0)',
+        plot_bgcolor: 'rgba(0,0,0,0)'
+    };
+    
+    Plotly.newPlot(container, data, layout);
+}
+
+function generateRealisticTopographicData() {
+    // Generate realistic topographic data for 8x8 grid
+    const data = [];
+    for (let i = 0; i < 8; i++) {
+        const row = [];
+        for (let j = 0; j < 8; j++) {
+            // Create realistic activation pattern with motor cortex focus
+            const distance = Math.sqrt((i - 3.5) ** 2 + (j - 3.5) ** 2);
+            const baseActivation = Math.exp(-distance / 1.5) * 0.8;
+            const noise = (Math.random() - 0.5) * 0.2;
+            const activation = baseActivation + noise;
+            row.push(activation);
+        }
+        data.push(row);
+    }
+    return data;
+}
+
+function createTimeFrequencyChart() {
+    // Mock time-frequency data
+    const timePoints = Array.from({length: 50}, (_, i) => i * 0.02);
+    const frequencies = Array.from({length: 30}, (_, i) => i + 1);
+    const tfData = [];
+    
+    for (let i = 0; i < frequencies.length; i++) {
+        for (let j = 0; j < timePoints.length; j++) {
+            tfData.push([timePoints[j], frequencies[i], Math.random() * 10]);
+        }
+    }
+    
+    const data = [{
+        z: tfData.map(d => d[2]),
+        x: timePoints,
+        y: frequencies,
+        type: 'heatmap',
+        colorscale: 'Viridis',
+        showscale: true
+    }];
+    
+    const layout = {
+        title: 'Time-Frequency Analysis',
+        xaxis: { title: 'Time (s)' },
+        yaxis: { title: 'Frequency (Hz)' },
+        paper_bgcolor: 'rgba(0,0,0,0)',
+        plot_bgcolor: 'rgba(0,0,0,0)'
+    };
+    
+    Plotly.newPlot('timeFrequencyChart', data, layout);
+}
+
+function createPowerSpectralChart() {
+    // Mock power spectral data
+    const frequencies = Array.from({length: 100}, (_, i) => i * 0.5);
+    const power = frequencies.map(f => Math.exp(-f/50) * (1 + 0.5 * Math.sin(f/10)));
+    
+    const data = [{
+        x: frequencies,
+        y: power,
+        type: 'scatter',
+        mode: 'lines',
+        name: 'Power Spectral Density',
+        line: { color: '#e74c3c', width: 2 }
+    }];
+    
+    const layout = {
+        title: 'Power Spectral Density',
+        xaxis: { title: 'Frequency (Hz)' },
+        yaxis: { title: 'Power (μV²/Hz)' },
+        paper_bgcolor: 'rgba(0,0,0,0)',
+        plot_bgcolor: 'rgba(0,0,0,0)'
+    };
+    
+    Plotly.newPlot('powerSpectralChart', data, layout);
+}
+
+function createERPChart() {
+    // Mock ERP data
+    const timePoints = Array.from({length: 100}, (_, i) => (i - 50) * 0.01);
+    const erp = timePoints.map(t => Math.exp(-t**2/0.1) * Math.sin(2 * Math.PI * t * 10));
+    
+    const data = [{
+        x: timePoints,
+        y: erp,
+        type: 'scatter',
+        mode: 'lines',
+        name: 'ERP Waveform',
+        line: { color: '#2ecc71', width: 2 }
+    }];
+    
+    const layout = {
+        title: 'Event-Related Potential',
+        xaxis: { title: 'Time (s)' },
+        yaxis: { title: 'Amplitude (μV)' },
+        paper_bgcolor: 'rgba(0,0,0,0)',
+        plot_bgcolor: 'rgba(0,0,0,0)'
+    };
+    
+    Plotly.newPlot('erpChart', data, layout);
+}
+
+function createTopographicChart() {
+    // Mock topographic map
+    const data = [{
+        z: generateMockTopographicData(),
+        type: 'heatmap',
+        colorscale: 'RdBu',
+        showscale: true
+    }];
+    
+    const layout = {
+        title: 'Topographic Map',
+        xaxis: { title: 'Electrode Position X' },
+        yaxis: { title: 'Electrode Position Y' },
+        paper_bgcolor: 'rgba(0,0,0,0)',
+        plot_bgcolor: 'rgba(0,0,0,0)'
+    };
+    
+    Plotly.newPlot('topographicChart', data, layout);
+}
+
+function updateChannelSignal() {
+    if (selectedElectrodes.length === 0) {
+        // Show placeholder
+        const data = [{
+            x: [],
+            y: [],
+            type: 'scatter',
+            mode: 'lines',
+            name: 'No channel selected'
+        }];
+        
+        const layout = {
+            title: 'Select a channel to view signal',
+            xaxis: { title: 'Time (s)' },
+            yaxis: { title: 'Amplitude (μV)' },
+            paper_bgcolor: 'rgba(0,0,0,0)',
+            plot_bgcolor: 'rgba(0,0,0,0)'
+        };
+        
+        Plotly.newPlot('channelSignal', data, layout);
+        return;
+    }
+    
+    // Mock signal data for selected channels
+    const timePoints = Array.from({length: 1000}, (_, i) => i * 0.001);
+    const traces = selectedElectrodes.slice(0, 3).map((channelId, index) => {
+        const signal = timePoints.map(t => Math.sin(2 * Math.PI * t * (10 + index * 5)) * Math.exp(-t/2));
+        return {
+            x: timePoints,
+            y: signal,
+            type: 'scatter',
+            mode: 'lines',
+            name: `Channel ${channelId + 1}`,
+            line: { width: 1 }
+        };
+    });
+    
+    const layout = {
+        title: `Selected Channel Signals (${selectedElectrodes.length} channels)`,
+        xaxis: { title: 'Time (s)' },
+        yaxis: { title: 'Amplitude (μV)' },
+        paper_bgcolor: 'rgba(0,0,0,0)',
+        plot_bgcolor: 'rgba(0,0,0,0)'
+    };
+    
+    Plotly.newPlot('channelSignal', traces, layout);
+}
+
+function startAnimation() {
+    $('#playAnimation').html('<i class="fas fa-pause"></i> Pause');
+    animationInterval = setInterval(() => {
+        const currentValue = parseInt($('#timeSlider').val());
+        const maxValue = parseInt($('#timeSlider').attr('max'));
+        const newValue = currentValue >= maxValue ? parseInt($('#timeSlider').attr('min')) : currentValue + 10;
+        $('#timeSlider').val(newValue).trigger('input');
+    }, 100);
+}
+
+function stopAnimation() {
+    $('#playAnimation').html('<i class="fas fa-play"></i> Play');
+    clearInterval(animationInterval);
+    animationInterval = null;
+}
+
+function resetVisualization() {
+    $('#timeSlider').val(0).trigger('input');
+    $('#trialId').val(0);
+    currentTrial = 0;
+    currentTime = 0;
+    if (animationInterval) {
+        stopAnimation();
+    }
+    updateMainVisualization();
+}
+
+function initializeVideoSync() {
+    syncVideo = document.getElementById('syncVideo');
+    if (!syncVideo) return;
+    
+    // Sync controls
+    $('#syncNow').click(function() {
+        const offset = parseFloat($('#videoOffset').val()) || 0;
+        const ecogTime = currentTime / 1000; // Convert ms to seconds
+        syncVideo.currentTime = ecogTime + offset;
+        $('#syncStatus').text(`Synced at ${ecogTime.toFixed(2)}s`);
+    });
+    
+    // Auto sync mode
+    $('#syncMode').change(function() {
+        const mode = $(this).val();
+        if (mode === 'auto') {
+            // Enable auto sync
+            $('#syncStatus').text('Auto sync enabled');
+        } else {
+            $('#syncStatus').text('Manual sync mode');
+        }
+    });
+}
+
+function exportVisualization() {
+    // Export current visualization as image
+    const container = document.getElementById('mainVisualization');
+    Plotly.downloadImage(container, {
+        format: 'png',
+        width: 800,
+        height: 600,
+        filename: 'ecog_visualization'
+    });
+    ECoGApp.showSuccess('Visualization exported successfully!');
+}
+
+function exportSelectedData() {
+    if (selectedElectrodes.length === 0) {
+        ECoGApp.showError('Please select at least one electrode');
+        return;
+    }
+    
+    // Mock data export
+    const exportData = selectedElectrodes.map(channelId => ({
+        channel_id: channelId,
+        trial_id: currentTrial,
+        time_point: currentTime,
+        amplitude: Math.random() * 100 - 50
+    }));
+    
+    ECoGApp.downloadCSV(exportData, 'selected_channel_data.csv');
+    ECoGApp.showSuccess('Selected data exported successfully!');
+}
+
+function performStatisticalAnalysis() {
+    ECoGApp.showSuccess('Statistical analysis feature coming soon!');
+}
+
+function showAdvancedSettings() {
+    ECoGApp.showSuccess('Advanced settings panel coming soon!');
+}
+</script>
+
+<style>
+.visualization-container {
+    background-color: var(--light-color);
+    border-radius: var(--border-radius);
+    padding: 1rem;
+}
+
+.electrode-grid-container {
+    max-height: 400px;
+    overflow-y: auto;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: 1rem;
+}
+
+.video-container {
+    position: relative;
+    background-color: var(--dark-color);
+    border-radius: var(--border-radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+}
+
+.video-container video {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.sync-status {
+    padding: 0.5rem;
+    border-radius: var(--border-radius);
+    font-weight: 500;
+}
+
+.sync-status.synced {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.sync-status.not-synced {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+</style>
+{% endblock %}

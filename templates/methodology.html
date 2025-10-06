@@ -1,0 +1,509 @@
+{% extends "base.html" %}
+
+{% block title %}Methodology - ECoG BCI Research{% endblock %}
+
+{% block body_class %}methodology-page{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<section class="section bg-gradient-primary text-white">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h1 class="display-4 fw-bold mb-3">
+                    <i class="fas fa-microscope me-3"></i>
+                    Methodology
+                </h1>
+                <p class="lead">
+                    Detailed experimental setup, hardware specifications, and software pipeline documentation
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Experimental Setup -->
+<section class="section">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h2 class="section-title">
+                    <i class="fas fa-flask me-2"></i>
+                    Experimental Setup
+                </h2>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">
+                            <i class="fas fa-user me-2"></i>
+                            Participant Information
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled">
+                            <li class="mb-2">
+                                <i class="fas fa-check text-success me-2"></i>
+                                <strong>Age:</strong> Adult participant
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-check text-success me-2"></i>
+                                <strong>Medical Status:</strong> Epilepsy monitoring
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-check text-success me-2"></i>
+                                <strong>ECoG Grid:</strong> 160 electrodes
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-check text-success me-2"></i>
+                                <strong>Duration:</strong> 4-minute recording
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0">
+                            <i class="fas fa-video me-2"></i>
+                            Stimulus Presentation
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled">
+                            <li class="mb-2">
+                                <i class="fas fa-check text-success me-2"></i>
+                                <strong>Video Content:</strong> Walking scene with annotations
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-check text-success me-2"></i>
+                                <strong>Stimulus Types:</strong> Faces, objects, kanji, digits
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-check text-success me-2"></i>
+                                <strong>Photodiode:</strong> Synchronization signal
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-check text-success me-2"></i>
+                                <strong>Total Trials:</strong> 252 stimulus presentations
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Hardware Specifications -->
+<section class="section bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h2 class="section-title">
+                    <i class="fas fa-microchip me-2"></i>
+                    Hardware Specifications
+                </h2>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-brain me-2"></i>
+                            ECoG Recording System
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <strong>Electrodes:</strong><br>
+                                <span class="text-primary">160 channels</span>
+                            </div>
+                            <div class="col-12">
+                                <strong>Sampling Rate:</strong><br>
+                                <span class="text-primary">1200 Hz</span>
+                            </div>
+                            <div class="col-12">
+                                <strong>Resolution:</strong><br>
+                                <span class="text-primary">16-bit ADC</span>
+                            </div>
+                            <div class="col-12">
+                                <strong>Bandwidth:</strong><br>
+                                <span class="text-primary">0.1 - 500 Hz</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-video me-2"></i>
+                            Video Recording
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <strong>Resolution:</strong><br>
+                                <span class="text-primary">1920×1080</span>
+                            </div>
+                            <div class="col-12">
+                                <strong>Frame Rate:</strong><br>
+                                <span class="text-primary">30 FPS</span>
+                            </div>
+                            <div class="col-12">
+                                <strong>Duration:</strong><br>
+                                <span class="text-primary">4 minutes</span>
+                            </div>
+                            <div class="col-12">
+                                <strong>Format:</strong><br>
+                                <span class="text-primary">MP4</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-sync me-2"></i>
+                            Synchronization
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <strong>Photodiode:</strong><br>
+                                <span class="text-primary">LED-based</span>
+                            </div>
+                            <div class="col-12">
+                                <strong>Sync Signal:</strong><br>
+                                <span class="text-primary">TTL pulses</span>
+                            </div>
+                            <div class="col-12">
+                                <strong>Accuracy:</strong><br>
+                                <span class="text-primary">±1 ms</span>
+                            </div>
+                            <div class="col-12">
+                                <strong>Method:</strong><br>
+                                <span class="text-primary">Hardware sync</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Software Pipeline -->
+<section class="section">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h2 class="section-title">
+                    <i class="fas fa-code me-2"></i>
+                    Software Pipeline Documentation
+                </h2>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-cogs me-2"></i>
+                            Preprocessing Pipeline
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="accordion" id="preprocessingAccordion">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#filtering">
+                                        Bandpass Filtering
+                                    </button>
+                                </h2>
+                                <div id="filtering" class="accordion-collapse collapse show" data-bs-parent="#preprocessingAccordion">
+                                    <div class="accordion-body">
+                                        <p><strong>Implementation:</strong> SciPy Butterworth filter</p>
+                                        <p><strong>Parameters:</strong> 0.5-150 Hz, 4th order</p>
+                                        <p><strong>Notch Filters:</strong> 50 Hz, 60 Hz</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#artifact">
+                                        Artifact Rejection
+                                    </button>
+                                </h2>
+                                <div id="artifact" class="accordion-collapse collapse" data-bs-parent="#preprocessingAccordion">
+                                    <div class="accordion-body">
+                                        <p><strong>Method:</strong> Statistical thresholding</p>
+                                        <p><strong>Variance Threshold:</strong> 3 standard deviations</p>
+                                        <p><strong>Amplitude Threshold:</strong> ±500 μV</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#segmentation">
+                                        Trial Segmentation
+                                    </button>
+                                </h2>
+                                <div id="segmentation" class="accordion-collapse collapse" data-bs-parent="#preprocessingAccordion">
+                                    <div class="accordion-body">
+                                        <p><strong>Method:</strong> Photodiode signal detection</p>
+                                        <p><strong>Window:</strong> -300 to +400 ms</p>
+                                        <p><strong>Total Trials:</strong> 252 detected</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-chart-line me-2"></i>
+                            Feature Extraction
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="accordion" id="featureAccordion">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#gamma">
+                                        Gamma Power Analysis
+                                    </button>
+                                </h2>
+                                <div id="gamma" class="accordion-collapse collapse show" data-bs-parent="#featureAccordion">
+                                    <div class="accordion-body">
+                                        <p><strong>Frequency Band:</strong> 110-140 Hz</p>
+                                        <p><strong>Method:</strong> Hilbert transform</p>
+                                        <p><strong>Feature:</strong> Log-variance</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#csp">
+                                        CSP + LDA
+                                    </button>
+                                </h2>
+                                <div id="csp" class="accordion-collapse collapse" data-bs-parent="#featureAccordion">
+                                    <div class="accordion-body">
+                                        <p><strong>CSP Components:</strong> 6 spatial filters</p>
+                                        <p><strong>LDA Classifier:</strong> Linear discriminant analysis</p>
+                                        <p><strong>Cross-validation:</strong> Leave-one-out</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#eegnet">
+                                        EEGNet CNN
+                                    </button>
+                                </h2>
+                                <div id="eegnet" class="accordion-collapse collapse" data-bs-parent="#featureAccordion">
+                                    <div class="accordion-body">
+                                        <p><strong>Architecture:</strong> Compact CNN</p>
+                                        <p><strong>Input:</strong> Raw ECoG epochs</p>
+                                        <p><strong>Output:</strong> Stimulus classification</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Mathematical Formulations -->
+<section class="section bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h2 class="section-title">
+                    <i class="fas fa-calculator me-2"></i>
+                    Mathematical Formulations
+                </h2>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-function me-2"></i>
+                            Gamma Power Calculation
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="math-formula">
+                            <h6>Bandpass Filtering:</h6>
+                            <p>$$H(f) = \frac{1}{1 + \left(\frac{f}{f_c}\right)^{2n}}$$</p>
+                            
+                            <h6>Hilbert Transform:</h6>
+                            <p>$$\tilde{x}(t) = \mathcal{H}[x(t)] = \frac{1}{\pi} \int_{-\infty}^{\infty} \frac{x(\tau)}{t-\tau} d\tau$$</p>
+                            
+                            <h6>Power Calculation:</h6>
+                            <p>$$P(t) = |\tilde{x}(t)|^2$$</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-matrix me-2"></i>
+                            CSP Algorithm
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="math-formula">
+                            <h6>Covariance Matrices:</h6>
+                            <p>$$C_1 = \frac{1}{N_1} \sum_{i=1}^{N_1} X_i X_i^T$$</p>
+                            <p>$$C_2 = \frac{1}{N_2} \sum_{i=1}^{N_2} X_i X_i^T$$</p>
+                            
+                            <h6>Generalized Eigenvalue Problem:</h6>
+                            <p>$$C_1 W = \lambda C_2 W$$</p>
+                            
+                            <h6>Spatial Filters:</h6>
+                            <p>$$Z = W^T X$$</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- References -->
+<section class="section">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h2 class="section-title">
+                    <i class="fas fa-book me-2"></i>
+                    References & Citations
+                </h2>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <ol class="references-list">
+                            <li class="mb-3">
+                                <strong>Kapeller et al. (2018)</strong> - "Real-Time Detection and Discrimination of Visual Perception Processes Using ECoG" - <em>IEEE Transactions on Biomedical Engineering</em>
+                            </li>
+                            <li class="mb-3">
+                                <strong>Ramoser et al. (2000)</strong> - "Optimal Spatial Filtering of Single Trial EEG" - <em>IEEE Transactions on Biomedical Engineering</em>
+                            </li>
+                            <li class="mb-3">
+                                <strong>Lawhern et al. (2018)</strong> - "EEGNet: A Compact Convolutional Neural Network for EEG-based Brain-Computer Interfaces" - <em>Journal of Neural Engineering</em>
+                            </li>
+                            <li class="mb-3">
+                                <strong>Vaswani et al. (2017)</strong> - "Attention Is All You Need" - <em>Advances in Neural Information Processing Systems</em>
+                            </li>
+                            <li class="mb-3">
+                                <strong>IEEE-SMC-2025</strong> - "ECoG Video Analysis Competition Guidelines" - <em>IEEE Systems, Man, and Cybernetics Society</em>
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_scripts %}
+<!-- MathJax for LaTeX rendering -->
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script>
+window.MathJax = {
+    tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+    }
+};
+</script>
+
+<style>
+.math-formula {
+    font-family: 'Times New Roman', serif;
+}
+
+.math-formula h6 {
+    color: var(--primary-color);
+    font-weight: 600;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.math-formula p {
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.references-list {
+    counter-reset: item;
+}
+
+.references-list li {
+    display: block;
+    margin-bottom: 1rem;
+    padding-left: 2rem;
+    position: relative;
+}
+
+.references-list li:before {
+    content: counter(item);
+    counter-increment: item;
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: var(--primary-color);
+    color: white;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+</style>
+{% endblock %}

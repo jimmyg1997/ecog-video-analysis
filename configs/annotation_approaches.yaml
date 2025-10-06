@@ -1,0 +1,196 @@
+# 🎥 Smart Video Annotation Approaches Configuration
+# IEEE-SMC-2025 ECoG Video Competition
+
+# Fast Experimentation Settings
+fast_mode:
+  enabled: true
+  start_time: 0      # Start from beginning
+  duration: 20       # First 20 seconds for quick results
+  time_points: 100   # Number of time points for visualization
+
+# Approach 1: Brain Region Activation Overlay
+approach1:
+  enabled: true
+  name: "Real-Time Brain Region Activation Overlay"
+  description: "Shows which brain regions are most active during each video frame"
+  
+  brain_regions:
+    Occipital: [131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155, 156, 157, 158, 159, 160]
+    Temporal: [101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130]
+    Parietal: [61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100]
+    Central: [31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60]
+    Frontal: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30]
+  
+  top_channels: [131, 107, 113, 114, 71, 108, 132, 152, 127, 105]
+  window_size: 0.5  # seconds
+  visualization:
+    plot_type: "heatmap"
+    colormap: "viridis"
+    save_format: "png"
+    dpi: 300
+
+# Approach 2: Category-Specific Channel Response
+approach2:
+  enabled: true
+  name: "Category-Specific Channel Response Visualization"
+  description: "Displays category-specific channel responses (digits, faces, objects, etc.)"
+  
+  category_channels:
+    digit: [70, 77, 104, 105, 126]
+    kanji: [70, 77, 104, 105, 144]
+    face: [70, 104, 126, 144, 147]
+    body: [70, 76, 105, 126, 144]
+    object: [70, 77, 104, 105, 118]
+    hiragana: [70, 104, 105, 126, 144]
+    line: [70, 104, 105, 126, 144]
+  
+  window_size: 0.5  # seconds
+  visualization:
+    plot_type: "line_plot"
+    colormap: "Set3"
+    save_format: "png"
+    dpi: 300
+
+# Approach 3: High-Gamma Envelope Timeline
+approach3:
+  enabled: true
+  name: "High-Gamma Envelope Timeline with Video Sync"
+  description: "Rolling high-gamma envelope visualization synchronized with video playback"
+  
+  top_channels: [131, 107, 113, 114, 71, 108, 132, 152, 127, 105]
+  window_size: 1.0  # seconds
+  step_size: 0.1    # seconds
+  time_points: 200  # Higher resolution for timeline
+  
+  visualization:
+    plot_type: "multi_panel"
+    colormap: "inferno"
+    save_format: "png"
+    dpi: 300
+    show_top_5: true
+    show_heatmap: true
+    show_mean: true
+
+# Approach 4: Multi-Model Ensemble Dashboard
+approach4:
+  enabled: true
+  name: "Multi-Model Ensemble Annotation Dashboard"
+  description: "Combines ML object detection with ECoG responses"
+  
+  ensemble_config:
+    ecog_threshold: 45.0  # Activity threshold for stimulus detection
+    confidence_threshold: 0.1
+    max_confidence: 0.9
+    
+  top_channels: [131, 107, 113, 114, 71]  # Top 5 for ensemble
+  window_size: 0.5  # seconds
+  
+  visualization:
+    plot_type: "dashboard"
+    panels: 4
+    save_format: "png"
+    dpi: 300
+    show_ecog_activity: true
+    show_predictions: true
+    show_confidence: true
+    show_comparison: true
+
+# Video Synchronization Settings
+video_sync:
+  enabled: true
+  video_path: "data/raw/walk.mp4"
+  output_path: "results/videos/smart_annotation_demo.mp4"
+  codec: "mp4v"
+  fps: null  # Auto-detect from video
+  
+  overlay_settings:
+    brain_regions: true
+    categories: true
+    timeline: true
+    confidence: true
+
+# Output Configuration
+output:
+  base_dir: "results"
+  visualizations_dir: "results/visualizations"
+  videos_dir: "results/videos"
+  reports_dir: "results/reports"
+  
+  file_naming:
+    timestamp: true
+    approach_prefix: true
+    format: "{approach}_{timestamp}.{extension}"
+  
+  formats:
+    images: ["png", "svg"]
+    videos: ["mp4"]
+    reports: ["md", "html"]
+
+# Performance Settings
+performance:
+  parallel_processing: false  # Set to true for faster processing
+  memory_efficient: true
+  chunk_size: 1000
+  
+  # Progress tracking
+  show_progress: true
+  progress_bar: true
+  verbose: true
+
+# Competition Settings
+competition:
+  mode: "fast_experimentation"  # Options: fast_experimentation, full_analysis, presentation
+  target_duration: 20  # seconds for fast mode
+  full_duration: 252   # seconds for full video
+  
+  # Key findings to highlight
+  key_channels: [131, 107, 113, 114, 71, 108, 132, 152, 127, 105]
+  key_regions: ["Occipital", "Temporal", "Parietal"]
+  key_categories: ["digit", "face", "object", "kanji", "body"]
+  
+  # Competition advantages
+  advantages:
+    - "Real-time brain activation visualization"
+    - "Category-specific response patterns"
+    - "High-gamma envelope analysis"
+    - "Multi-model ensemble approach"
+    - "Fast experimentation capability"
+
+# Integration Settings
+integration:
+  # ML model integration
+  ml_models:
+    yolo: true
+    pytorch: true
+    opencv_dnn: true
+  
+  # ECoG analysis integration
+  ecog_features:
+    high_gamma: true
+    time_domain: true
+    frequency_domain: true
+    spatial: true
+  
+  # Existing pipeline integration
+  use_existing_annotations: true
+  use_existing_features: true
+  use_existing_preprocessing: true
+
+# Validation Settings
+validation:
+  enabled: true
+  check_data_integrity: true
+  verify_synchronization: true
+  validate_outputs: true
+  
+  # Quality checks
+  min_activation_threshold: 0.1
+  max_confidence_threshold: 1.0
+  expected_categories: ["digit", "kanji", "face", "body", "object", "hiragana", "line"]
+
+# Logging Configuration
+logging:
+  level: "INFO"  # DEBUG, INFO, WARNING, ERROR
+  file: "logs/smart_annotation.log"
+  console: true
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"

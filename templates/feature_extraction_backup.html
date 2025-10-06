@@ -1,0 +1,464 @@
+{% extends "base.html" %}
+
+{% block title %}ECoG Brain-Computer Interface Research - Home{% endblock %}
+
+{% block body_class %}home-page{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <div class="hero-content">
+                    <h1 class="hero-title">
+                        <i class="fas fa-brain me-3"></i>
+                        ECoG Brain-Computer Interface Research
+                    </h1>
+                    <p class="hero-subtitle">
+                        Advancing neural decoding through electrocorticography (ECoG) analysis 
+                        for the IEEE-SMC-2025 ECoG Video Analysis Competition. Explore real-time 
+                        brain activity visualization and stimulus decoding capabilities.
+                    </p>
+                    <div class="hero-buttons">
+                        <a href="{{ url_for('ecog_visualization') }}" class="btn btn-light btn-lg me-3">
+                            <i class="fas fa-play me-2"></i>Explore Brain Activity
+                        </a>
+                        <a href="{{ url_for('data_overview') }}" class="btn btn-outline-light btn-lg">
+                            <i class="fas fa-chart-bar me-2"></i>View Data Analysis
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="hero-visualization">
+                    <div class="brain-visualization">
+                        <i class="fas fa-brain" style="font-size: 8rem; color: rgba(255,255,255,0.3);"></i>
+                        <div class="mt-3">
+                            <h4 class="text-white">Real-Time Neural Decoding</h4>
+                            <p class="text-white-50">252 trials • 160 electrodes • 4-minute video</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Project Stats Section -->
+<section class="section bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="section-title">
+                    <h2>Project Overview</h2>
+                    <p>Comprehensive ECoG analysis pipeline with advanced preprocessing, feature extraction, and real-time visualization capabilities.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-lg-3 col-md-6">
+                <div class="stats-card text-center">
+                    <span class="stats-number" id="totalTrials">
+                        {% if raw_data %}{{ raw_data.get('stimcode', [0] * 252)|length }}{% else %}252{% endif %}
+                    </span>
+                    <div class="stats-label">Total Trials</div>
+                    <div class="mt-2">
+                        <i class="fas fa-flask text-primary" style="font-size: 2rem;"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6">
+                <div class="stats-card text-center">
+                    <span class="stats-number" id="totalChannels">
+                        {% if raw_data %}{{ raw_data['ecog_data'].shape[0] }}{% else %}160{% endif %}
+                    </span>
+                    <div class="stats-label">ECoG Electrodes</div>
+                    <div class="mt-2">
+                        <i class="fas fa-microchip text-primary" style="font-size: 2rem;"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6">
+                <div class="stats-card text-center">
+                    <span class="stats-number" id="goodChannels">
+                        {% if raw_data %}{{ raw_data.get('good_channels', 156) }}{% else %}156{% endif %}
+                    </span>
+                    <div class="stats-label">Good Channels</div>
+                    <div class="mt-2">
+                        <i class="fas fa-check-circle text-success" style="font-size: 2rem;"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6">
+                <div class="stats-card text-center">
+                    <span class="stats-number" id="videoDuration">
+                        {% if raw_data %}{{ "%.1f"|format(raw_data['duration'] / 60) }}{% else %}4.0{% endif %}
+                    </span>
+                    <div class="stats-label">Video Duration (min)</div>
+                    <div class="mt-2">
+                        <i class="fas fa-video text-primary" style="font-size: 2rem;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="section">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="section-title">
+                    <h2>Research Features</h2>
+                    <p>Advanced neural signal processing and visualization capabilities for ECoG data analysis.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-lg-4 col-md-6">
+                <div class="card h-100 interactive-card" onclick="window.location.href='{{ url_for('data_overview') }}'">
+                    <div class="card-body text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-database text-primary" style="font-size: 3rem;"></i>
+                        </div>
+                        <h5 class="card-title">Data Overview</h5>
+                        <p class="card-text">
+                            Comprehensive dataset statistics, channel quality analysis, and interactive 
+                            data exploration tools for understanding ECoG signal characteristics.
+                        </p>
+                        <div class="mt-auto">
+                            <span class="badge bg-primary">Interactive Charts</span>
+                            <span class="badge bg-secondary ms-1">Quality Metrics</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6">
+                <div class="card h-100 interactive-card" onclick="window.location.href='{{ url_for('preprocessing') }}'">
+                    <div class="card-body text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-cogs text-primary" style="font-size: 3rem;"></i>
+                        </div>
+                        <h5 class="card-title">Preprocessing Pipeline</h5>
+                        <p class="card-text">
+                            Advanced signal processing pipeline with bandpass filtering, artifact rejection, 
+                            and trial segmentation for optimal neural signal quality.
+                        </p>
+                        <div class="mt-auto">
+                            <span class="badge bg-primary">Signal Processing</span>
+                            <span class="badge bg-secondary ms-1">Quality Control</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6">
+                <div class="card h-100 interactive-card" onclick="window.location.href='{{ url_for('video_annotations_page') }}'">
+                    <div class="card-body text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-video text-primary" style="font-size: 3rem;"></i>
+                        </div>
+                        <h5 class="card-title">Video Annotations</h5>
+                        <p class="card-text">
+                            Synchronized video playback with detailed stimulus annotations including 
+                            faces, objects, kanji characters, and temporal markers.
+                        </p>
+                        <div class="mt-auto">
+                            <span class="badge bg-primary">Video Sync</span>
+                            <span class="badge bg-secondary ms-1">Annotations</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6">
+                <div class="card h-100 interactive-card" onclick="window.location.href='{{ url_for('ecog_visualization') }}'">
+                    <div class="card-body text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-brain text-primary" style="font-size: 3rem;"></i>
+                        </div>
+                        <h5 class="card-title">Real-Time ECoG Visualization</h5>
+                        <p class="card-text">
+                            Interactive brain activity visualization with spatial motor cortex mapping, 
+                            gait-phase neural signatures, and event-related spectral perturbations.
+                        </p>
+                        <div class="mt-auto">
+                            <span class="badge bg-primary">Real-Time</span>
+                            <span class="badge bg-secondary ms-1">3D Visualization</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6">
+                <div class="card h-100 interactive-card" onclick="window.location.href='{{ url_for('results_analysis') }}'">
+                    <div class="card-body text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-chart-line text-primary" style="font-size: 3rem;"></i>
+                        </div>
+                        <h5 class="card-title">Results & Analysis</h5>
+                        <p class="card-text">
+                            Comprehensive analysis results with trial-averaged ERPs, time-frequency 
+                            decomposition, and topographic brain activation maps.
+                        </p>
+                        <div class="mt-auto">
+                            <span class="badge bg-primary">Statistical Analysis</span>
+                            <span class="badge bg-secondary ms-1">Topographic Maps</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6">
+                <div class="card h-100 interactive-card" onclick="window.location.href='{{ url_for('methodology') }}'">
+                    <div class="card-body text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-microscope text-primary" style="font-size: 3rem;"></i>
+                        </div>
+                        <h5 class="card-title">Methodology</h5>
+                        <p class="card-text">
+                            Detailed experimental setup, hardware specifications, software pipeline 
+                            documentation, and mathematical formulations for reproducible research.
+                        </p>
+                        <div class="mt-auto">
+                            <span class="badge bg-primary">Documentation</span>
+                            <span class="badge bg-secondary ms-1">Reproducible</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Technical Highlights Section -->
+<section class="section bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="section-title">
+                    <h2>Technical Highlights</h2>
+                    <p>Cutting-edge neural signal processing and machine learning techniques for ECoG analysis.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">
+                            <i class="fas fa-signal me-2"></i>
+                            Signal Processing Pipeline
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled">
+                            <li class="mb-2">
+                                <i class="fas fa-check text-success me-2"></i>
+                                <strong>Bandpass Filtering:</strong> 0.5-150 Hz with notch filters at 50/60 Hz
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-check text-success me-2"></i>
+                                <strong>Artifact Rejection:</strong> Automated bad channel detection and removal
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-check text-success me-2"></i>
+                                <strong>Trial Segmentation:</strong> 100-400 ms post-stimulus windows
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-check text-success me-2"></i>
+                                <strong>Baseline Normalization:</strong> Z-score normalization per trial
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">
+                            <i class="fas fa-brain me-2"></i>
+                            Feature Extraction Methods
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled">
+                            <li class="mb-2">
+                                <i class="fas fa-check text-success me-2"></i>
+                                <strong>Gamma Power:</strong> 110-140 Hz broadband gamma analysis
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-check text-success me-2"></i>
+                                <strong>Template Correlation:</strong> LOOCV with gamma templates
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-check text-success me-2"></i>
+                                <strong>CSP + LDA:</strong> Spatial filtering with linear classification
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-check text-success me-2"></i>
+                                <strong>Deep Learning:</strong> EEGNet CNN and Transformer models
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Competition Info Section -->
+<section class="section">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="section-title">
+                    <h2>IEEE-SMC-2025 Competition</h2>
+                    <p>Participating in the ECoG Video Analysis Competition with state-of-the-art neural decoding techniques.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="card bg-gradient-primary text-white">
+                    <div class="card-body text-center p-5">
+                        <i class="fas fa-trophy mb-3" style="font-size: 4rem;"></i>
+                        <h3 class="mb-3">Competition Ready</h3>
+                        <p class="mb-4">
+                            Our comprehensive ECoG analysis pipeline is fully prepared for the IEEE-SMC-2025 
+                            ECoG Video Analysis Competition. With advanced preprocessing, multiple feature 
+                            extraction methods, and real-time visualization capabilities, we're ready to 
+                            showcase cutting-edge neural decoding research.
+                        </p>
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <div class="text-center">
+                                    <i class="fas fa-medal mb-2" style="font-size: 2rem;"></i>
+                                    <h6>Academic Excellence</h6>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="text-center">
+                                    <i class="fas fa-code mb-2" style="font-size: 2rem;"></i>
+                                    <h6>Open Source</h6>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="text-center">
+                                    <i class="fas fa-users mb-2" style="font-size: 2rem;"></i>
+                                    <h6>Collaborative</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Quick Start Section -->
+<section class="section bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="section-title">
+                    <h2>Quick Start</h2>
+                    <p>Get started exploring our ECoG research data and visualizations.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-lg-4">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <i class="fas fa-chart-bar text-primary" style="font-size: 3rem;"></i>
+                        </div>
+                        <h5>1. Explore Data</h5>
+                        <p class="text-muted">Start with our comprehensive data overview to understand the dataset structure and quality metrics.</p>
+                        <a href="{{ url_for('data_overview') }}" class="btn btn-primary">View Data Overview</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <i class="fas fa-brain text-primary" style="font-size: 3rem;"></i>
+                        </div>
+                        <h5>2. Visualize Brain Activity</h5>
+                        <p class="text-muted">Experience real-time ECoG visualization with interactive brain maps and neural signatures.</p>
+                        <a href="{{ url_for('ecog_visualization') }}" class="btn btn-primary">Start Visualization</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <i class="fas fa-video text-primary" style="font-size: 3rem;"></i>
+                        </div>
+                        <h5>3. Watch Annotated Video</h5>
+                        <p class="text-muted">View the synchronized walking video with detailed stimulus annotations and timing.</p>
+                        <a href="{{ url_for('video_annotations_page') }}" class="btn btn-primary">Watch Video</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+$(document).ready(function() {
+    // Animate stats numbers on page load
+    animateStats();
+    
+    // Add hover effects to feature cards
+    $('.interactive-card').hover(
+        function() {
+            $(this).addClass('shadow-lg');
+        },
+        function() {
+            $(this).removeClass('shadow-lg');
+        }
+    );
+});
+
+function animateStats() {
+    $('.stats-number').each(function() {
+        const $this = $(this);
+        const countTo = parseInt($this.text());
+        
+        $({ countNum: 0 }).animate({
+            countNum: countTo
+        }, {
+            duration: 2000,
+            easing: 'swing',
+            step: function() {
+                $this.text(Math.floor(this.countNum));
+            },
+            complete: function() {
+                $this.text(countTo);
+            }
+        });
+    });
+}
+</script>
+{% endblock %}
