@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ECoG Pipeline Framework</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: #000;
+            color: #fff;
+            font-family: 'Arial', sans-serif;
+            padding: 40px;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            font-size: 3.5em;
+            font-weight: 300;
+        }
+        
+        .logo {
+            background: #d4ff00;
+            color: #000;
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-size: 2em;
+            font-weight: bold;
+        }
+        
+        .pipeline-container {
+            border: 2px solid #333;
+            padding: 50px;
+            position: relative;
+        }
+        
+        .pipeline {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+        
+        .stage {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .stage-title {
+            font-size: 1.1em;
+            text-align: center;
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .visual-box {
+            width: 200px;
+            height: 180px;
+            border: 2px solid #4a9eff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background: #111;
+        }
+        
+        .signal-viz {
+            width: 90%;
+            height: 90%;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding: 10px;
+        }
+        
+        .signal-line {
+            width: 100%;
+            height: 20px;
+            background: linear-gradient(90deg, #4a9eff 0%, #2d5aa0 50%, #4a9eff 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .signal-line::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            to { left: 100%; }
+        }
+        
+        .process-box {
+            width: 200px;
+            height: 180px;
+            border: 3px solid #4a9eff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1em;
+            text-align: center;
+            padding: 20px;
+            background: #001a33;
+        }
+        
+        .grid-viz {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            grid-template-rows: repeat(6, 1fr);
+            gap: 3px;
+            width: 90%;
+            height: 90%;
+        }
+        
+        .grid-cell {
+            background: #4a9eff;
+            opacity: 0.3;
+            animation: flicker 3s infinite;
+        }
+        
+        .grid-cell:nth-child(3n) {
+            animation-delay: 0.5s;
+        }
+        
+        .grid-cell:nth-child(5n) {
+            animation-delay: 1s;
+        }
+        
+        @keyframes flicker {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.8; }
+        }
+        
+        .features-viz {
+            width: 90%;
+            height: 90%;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(4, 1fr);
+            gap: 4px;
+        }
+        
+        .feature-block {
+            border: 1px solid #4a9eff;
+            position: relative;
+        }
+        
+        .feature-block:nth-child(1) { background: #ff6b6b; }
+        .feature-block:nth-child(2) { background: #4ecdc4; }
+        .feature-block:nth-child(3) { background: #45b7d1; }
+        .feature-block:nth-child(4) { background: #f7dc6f; }
+        .feature-block:nth-child(5) { background: #bb8fce; }
+        .feature-block:nth-child(6) { background: #85c1e9; }
+        .feature-block:nth-child(7) { background: #f8b739; }
+        .feature-block:nth-child(8) { background: #52be80; }
+        .feature-block:nth-child(9) { background: #ec7063; }
+        .feature-block:nth-child(10) { background: #5dade2; }
+        .feature-block:nth-child(11) { background: #48c9b0; }
+        .feature-block:nth-child(12) { background: #f39c12; }
+        .feature-block:nth-child(13) { background: #af7ac5; }
+        .feature-block:nth-child(14) { background: #58d68d; }
+        .feature-block:nth-child(15) { background: #3498db; }
+        .feature-block:nth-child(16) { background: #e74c3c; }
+        
+        .arrow {
+            position: absolute;
+            width: 50px;
+            height: 3px;
+            background: #4a9eff;
+            top: 50%;
+            right: -45px;
+            transform: translateY(-50%);
+        }
+        
+        .arrow::after {
+            content: '';
+            position: absolute;
+            right: -10px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 0;
+            height: 0;
+            border-left: 15px solid #4a9eff;
+            border-top: 10px solid transparent;
+            border-bottom: 10px solid transparent;
+        }
+        
+        .bottom-pipeline {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            gap: 40px;
+            direction: rtl;
+        }
+        
+        .bottom-stage {
+            direction: ltr;
+        }
+        
+        .video-viz {
+            width: 90%;
+            height: 90%;
+            background: linear-gradient(45deg, #1a1a1a 25%, transparent 25%, transparent 75%, #1a1a1a 75%, #1a1a1a),
+                        linear-gradient(45deg, #1a1a1a 25%, transparent 25%, transparent 75%, #1a1a1a 75%, #1a1a1a);
+            background-size: 20px 20px;
+            background-position: 0 0, 10px 10px;
+            border: 2px solid #4a9eff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+        }
+        
+        .brain-viz {
+            width: 90%;
+            height: 90%;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .brain-outline {
+            width: 140px;
+            height: 140px;
+            border: 3px solid #4a9eff;
+            border-radius: 70% 70% 70% 0;
+            position: relative;
+            transform: rotate(-45deg);
+        }
+        
+        .electrode-dots {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            transform: rotate(45deg);
+        }
+        
+        .electrode {
+            width: 8px;
+            height: 8px;
+            background: #d4ff00;
+            border-radius: 50%;
+            position: absolute;
+            animation: blink 2s infinite;
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+        
+        .electrode:nth-child(1) { top: 20%; left: 30%; animation-delay: 0s; }
+        .electrode:nth-child(2) { top: 30%; left: 45%; animation-delay: 0.2s; }
+        .electrode:nth-child(3) { top: 40%; left: 25%; animation-delay: 0.4s; }
+        .electrode:nth-child(4) { top: 50%; left: 40%; animation-delay: 0.6s; }
+        .electrode:nth-child(5) { top: 60%; left: 30%; animation-delay: 0.8s; }
+        .electrode:nth-child(6) { top: 35%; left: 60%; animation-delay: 1s; }
+        .electrode:nth-child(7) { top: 45%; left: 55%; animation-delay: 1.2s; }
+        .electrode:nth-child(8) { top: 55%; left: 50%; animation-delay: 1.4s; }
+        
+        .stimuli-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            gap: 5px;
+            width: 90%;
+            height: 90%;
+            padding: 10px;
+        }
+        
+        .stimulus-item {
+            border: 1px solid #4a9eff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8em;
+            background: #001a33;
+            color: #d4ff00;
+        }
+        
+        .arrow-bottom {
+            position: absolute;
+            width: 3px;
+            height: 50px;
+            background: #4a9eff;
+            left: 50%;
+            bottom: -55px;
+            transform: translateX(-50%);
+        }
+        
+        .arrow-bottom::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-top: 15px solid #4a9eff;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+        }
+        
+        .arrow-bottom-reverse {
+            position: absolute;
+            width: 3px;
+            height: 50px;
+            background: #4a9eff;
+            left: 50%;
+            top: -55px;
+            transform: translateX(-50%);
+        }
+        
+        .arrow-bottom-reverse::after {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-bottom: 15px solid #4a9eff;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Proposed Framework</h1>
+        <div class="logo">BR4IN.IO</div>
+    </div>
+    
+    <div class="pipeline-container">
+        <!-- Top Pipeline -->
+        <div class="pipeline">
+            <!-- Stage 1: Raw Signals -->
+            <div class="stage">
+                <div class="stage-title">Raw ECoG<br>Signals<br>(160 channels)</div>
+                <div class="visual-box">
+                    <div class="signal-viz">
+                        <div class="signal-line"></div>
+                        <div class="signal-line" style="animation-delay: 0.3s;"></div>
+                        <div class="signal-line" style="animation-delay: 0.6s;"></div>
+                        <div class="signal-line" style="animation-delay: 0.9s;"></div>
+                        <div class="signal-line" style="animation-delay: 1.2s;"></div>
+                    </div>
+                    <div class="arrow"></div>
+                </div>
+            </div>
+            
+            <!-- Stage 2: Preprocessing -->
+            <div class="stage">
+                <div class="stage-title">Preprocessing<br>& Artifact<br>Removal</div>
+                <div class="process-box">
+                    • Bandpass Filter<br>
+                    • CAR<br>
+                    • ICA<br>
+                    • Segmentation
+                    <div class="arrow"></div>
+                </div>
+            </div>
+            
+            <!-- Stage 3: Trial Formation -->
+            <div class="stage">
+                <div class="stage-title">Trial Segmentation<br>(252 trials)<br>700ms epochs</div>
+                <div class="visual-box">
+                    <div class="grid-viz">
+                        <div class="grid-cell"></div>
+                        <div class="grid-cell"></div>
+                        <div class="grid-cell"></div>
+                        <div class="grid-cell"></div>
+                        <div class="grid-cell"></div>
+                        <div class="grid-cell"></div>
+                        <div class="grid-cell"></div>
+                        <div class="grid-cell"></div>
+                        <div class="grid-cell"></div>
+                        <div class="grid-cell"></div>
+                        <div class="grid-cell"></div>
+                        <div class="grid-cell"></div>
+                        <div class="grid-cell"></div>
+                        <div class="grid-cell"></div>
+                        <div class="grid-cell"></div>
+                        <div class="grid-cell"></div>
+                        <div class="grid-cell"></div>
+                        <div class="grid-cell"></div>
+                        <div class="grid-cell"></div>
+                        <div class="grid-cell"></div>
+                        <div class="grid-cell"></div>
+                        <div class="grid-cell"></div>
+                        <div class="grid-cell"></div>
+                        <div class="grid-cell"></div>
+                        <div class="grid-cell"></div>
+                        <div class="grid-cell"></div>
+                        <div class="grid-cell"></div>
+                        <div class="grid-cell"></div>
+                        <div class="grid-cell"></div>
+                        <div class="grid-cell"></div>
+                        <div class="grid-cell"></div>
+                        <div class="grid-cell"></div>
+                        <div class="grid-cell"></div>
+                        <div class="grid-cell"></div>
+                        <div class="grid-cell"></div>
+                        <div class="grid-cell"></div>
+                        <div class="grid-cell"></div>
+                        <div class="grid-cell"></div>
+                        <div class="grid-cell"></div>
+                        <div class="grid-cell"></div>
+                        <div class="grid-cell"></div>
+                        <div class="grid-cell"></div>
+                        <div class="grid-cell"></div>
+                        <div class="grid-cell"></div>
+                        <div class="grid-cell"></div>
+                        <div class="grid-cell"></div>
+                        <div class="grid-cell"></div>
+                        <div class="grid-cell"></div>
+                    </div>
+                    <div class="arrow"></div>
+                    <div class="arrow-bottom"></div>
+                </div>
+            </div>
+            
+            <!-- Stage 4: Feature Extraction -->
+            <div class="stage">
+                <div class="stage-title">Multi-Modal<br>Feature Extraction</div>
+                <div class="visual-box">
+                    <div class="features-viz">
+                        <div class="feature-block"></div>
+                        <div class="feature-block"></div>
+                        <div class="feature-block"></div>
+                        <div class="feature-block"></div>
+                        <div class="feature-block"></div>
+                        <div class="feature-block"></div>
+                        <div class="feature-block"></div>
+                        <div class="feature-block"></div>
+                        <div class="feature-block"></div>
+                        <div class="feature-block"></div>
+                        <div class="feature-block"></div>
+                        <div class="feature-block"></div>
+                        <div class="feature-block"></div>
+                        <div class="feature-block"></div>
+                        <div class="feature-block"></div>
+                        <div class="feature-block"></div>
+                    </div>
+                    <div class="arrow-bottom"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Bottom Pipeline (reversed) -->
+        <div class="bottom-pipeline">
+            <!-- Stage 8: Predicted Categories -->
+            <div class="stage bottom-stage">
+                <div class="visual-box">
+                    <div class="stimuli-grid">
+                        <div class="stimulus-item">Face</div>
+                        <div class="stimulus-item">Body</div>
+                        <div class="stimulus-item">Digit</div>
+                        <div class="stimulus-item">Kanji</div>
+                        <div class="stimulus-item">Hira</div>
+                        <div class="stimulus-item">Line</div>
+                        <div class="stimulus-item">Object</div>
+                        <div class="stimulus-item" style="background: #d4ff00; color: #000;">+Color</div>
+                    </div>
+                    <div class="arrow-bottom-reverse"></div>
+                </div>
+                <div class="stage-title">Predicted<br>Visual Categories<br>(14 classes)</div>
+            </div>
+            
+            <!-- Stage 7: Classification -->
+            <div class="stage bottom-stage">
+                <div class="process-box">
+                    ML/DL Models<br><br>
+                    • Random Forest<br>
+                    • SVM<br>
+                    • Neural Nets
+                    <div class="arrow-bottom-reverse"></div>
+                </div>
+                <div class="stage-title">Multiclass<br>Classification<br>(72.9% accuracy)</div>
+            </div>
+            
+            <!-- Stage 6: Brain Mapping -->
+            <div class="stage bottom-stage">
+                <div class="visual-box">
+                    <div class="brain-viz">
+                        <div class="brain-outline">
+                            <div class="electrode-dots">
+                                <div class="electrode"></div>
+                                <div class="electrode"></div>
+                                <div class="electrode"></div>
+                                <div class="electrode"></div>
+                                <div class="electrode"></div>
+                                <div class="electrode"></div>
+                                <div class="electrode"></div>
+                                <div class="electrode"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="arrow-bottom-reverse"></div>
+                </div>
+                <div class="stage-title">Real-Time<br>Brain Activity<br>Mapping</div>
+            </div>
+            
+            <!-- Stage 5: Video Sync -->
+            <div class="stage bottom-stage">
+                <div class="visual-box">
+                    <div class="video-viz">▶</div>
+                </div>
+                <div class="stage-title">Synchronized<br>Video Stream<br>(30 FPS)</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

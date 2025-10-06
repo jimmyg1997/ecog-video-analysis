@@ -50,59 +50,124 @@
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <div class="section-title">
-                    <h2>Project Overview</h2>
-                    <p>Comprehensive ECoG analysis pipeline with advanced preprocessing, feature extraction, and real-time visualization capabilities.</p>
+                <div class="section-title text-center">
+                    <h2><i class="fas fa-chart-line me-3 text-primary"></i>Project Overview</h2>
+                    <p class="lead">Comprehensive ECoG analysis pipeline with advanced preprocessing, feature extraction, and real-time visualization capabilities.</p>
                 </div>
             </div>
         </div>
         
+        <!-- Enhanced Stats Cards -->
+        <div class="row g-4 mb-5">
+            <div class="col-lg-3 col-md-6">
+                <div class="stats-card-enhanced text-center h-100">
+                    <div class="stats-icon">
+                        <i class="fas fa-flask"></i>
+                    </div>
+                    <div class="stats-content">
+                        <span class="stats-number" id="totalTrials">252</span>
+                        <div class="stats-label">Total Trials</div>
+                        <div class="stats-description">Neural responses analyzed</div>
+                    </div>
+                    <div class="stats-progress">
+                        <div class="progress-bar" style="width: 100%"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6">
+                <div class="stats-card-enhanced text-center h-100">
+                    <div class="stats-icon">
+                        <i class="fas fa-microchip"></i>
+                    </div>
+                    <div class="stats-content">
+                        <span class="stats-number" id="totalChannels">160</span>
+                        <div class="stats-label">ECoG Electrodes</div>
+                        <div class="stats-description">High-density grid</div>
+                    </div>
+                    <div class="stats-progress">
+                        <div class="progress-bar" style="width: 100%"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6">
+                <div class="stats-card-enhanced text-center h-100">
+                    <div class="stats-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="stats-content">
+                        <span class="stats-number" id="goodChannels">156</span>
+                        <div class="stats-label">Good Channels</div>
+                        <div class="stats-description">97.5% quality rate</div>
+                    </div>
+                    <div class="stats-progress">
+                        <div class="progress-bar" style="width: 97.5%"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6">
+                <div class="stats-card-enhanced text-center h-100">
+                    <div class="stats-icon">
+                        <i class="fas fa-video"></i>
+                    </div>
+                    <div class="stats-content">
+                        <span class="stats-number" id="videoDuration">4.5</span>
+                        <div class="stats-label">Video Duration (min)</div>
+                        <div class="stats-description">Walking paradigm</div>
+                    </div>
+                    <div class="stats-progress">
+                        <div class="progress-bar" style="width: 100%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Project Highlights -->
         <div class="row g-4">
-            <div class="col-lg-3 col-md-6">
-                <div class="stats-card text-center">
-                    <span class="stats-number" id="totalTrials">
-                        {% if raw_data %}{{ raw_data.get('stimcode', [0] * 252)|length }}{% else %}252{% endif %}
-                    </span>
-                    <div class="stats-label">Total Trials</div>
-                    <div class="mt-2">
-                        <i class="fas fa-flask text-primary" style="font-size: 2rem;"></i>
+            <div class="col-lg-4">
+                <div class="highlight-card">
+                    <div class="highlight-icon">
+                        <i class="fas fa-brain"></i>
                     </div>
+                    <h5>Real-Time Neural Decoding</h5>
+                    <p>Advanced machine learning models for real-time stimulus classification and brain state decoding.</p>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-check text-success me-2"></i>EEGNet CNN</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Transformer Models</li>
+                        <li><i class="fas fa-check text-success me-2"></i>CSP + LDA</li>
+                    </ul>
                 </div>
             </div>
             
-            <div class="col-lg-3 col-md-6">
-                <div class="stats-card text-center">
-                    <span class="stats-number" id="totalChannels">
-                        {% if raw_data %}{{ raw_data['ecog_data'].shape[0] }}{% else %}160{% endif %}
-                    </span>
-                    <div class="stats-label">ECoG Electrodes</div>
-                    <div class="mt-2">
-                        <i class="fas fa-microchip text-primary" style="font-size: 2rem;"></i>
+            <div class="col-lg-4">
+                <div class="highlight-card">
+                    <div class="highlight-icon">
+                        <i class="fas fa-chart-bar"></i>
                     </div>
+                    <h5>Comprehensive Analysis</h5>
+                    <p>Multi-modal analysis pipeline with preprocessing, feature extraction, and visualization.</p>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-check text-success me-2"></i>Signal Processing</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Feature Engineering</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Statistical Analysis</li>
+                    </ul>
                 </div>
             </div>
             
-            <div class="col-lg-3 col-md-6">
-                <div class="stats-card text-center">
-                    <span class="stats-number" id="goodChannels">
-                        {% if raw_data %}{{ raw_data.get('good_channels', 156) }}{% else %}156{% endif %}
-                    </span>
-                    <div class="stats-label">Good Channels</div>
-                    <div class="mt-2">
-                        <i class="fas fa-check-circle text-success" style="font-size: 2rem;"></i>
+            <div class="col-lg-4">
+                <div class="highlight-card">
+                    <div class="highlight-icon">
+                        <i class="fas fa-eye"></i>
                     </div>
-                </div>
-            </div>
-            
-            <div class="col-lg-3 col-md-6">
-                <div class="stats-card text-center">
-                    <span class="stats-number" id="videoDuration">
-                        {% if raw_data %}{{ "%.1f"|format(raw_data['duration'] / 60) }}{% else %}4.5{% endif %}
-                    </span>
-                    <div class="stats-label">Video Duration (min)</div>
-                    <div class="mt-2">
-                        <i class="fas fa-video text-primary" style="font-size: 2rem;"></i>
-                    </div>
+                    <h5>Interactive Visualization</h5>
+                    <p>Real-time brain activity visualization with spatial mapping and temporal dynamics.</p>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-check text-success me-2"></i>3D Brain Maps</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Video Synchronization</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Interactive Charts</li>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -318,47 +383,185 @@
 </section>
 
 <!-- Competition Info Section -->
-<section class="section">
+<section class="section competition-section">
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <div class="section-title">
-                    <h2>IEEE-SMC-2025 Competition</h2>
-                    <p>Participating in the ECoG Video Analysis Competition with state-of-the-art neural decoding techniques.</p>
+                <div class="section-title text-center">
+                    <h2><i class="fas fa-trophy me-3 text-warning"></i>IEEE-SMC-2025 Competition</h2>
+                    <p class="lead">Participating in the ECoG Video Analysis Competition with state-of-the-art neural decoding techniques.</p>
                 </div>
             </div>
         </div>
         
-        <div class="row">
+        <!-- Competition Status -->
+        <div class="row mb-5">
             <div class="col-lg-8 mx-auto">
-                <div class="card bg-gradient-primary text-white">
-                    <div class="card-body text-center p-5">
-                        <i class="fas fa-trophy mb-3" style="font-size: 4rem;"></i>
-                        <h3 class="mb-3">Competition Ready</h3>
-                        <p class="mb-4">
+                <div class="competition-status-card">
+                    <div class="competition-header">
+                        <div class="competition-icon">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <div class="competition-title">
+                            <h3>Competition Ready</h3>
+                            <p class="competition-subtitle">ECoG Video Analysis Challenge</p>
+                        </div>
+                        <div class="competition-badge">
+                            <span class="badge bg-success">Active</span>
+                        </div>
+                    </div>
+                    <div class="competition-content">
+                        <p class="competition-description">
                             Our comprehensive ECoG analysis pipeline is fully prepared for the IEEE-SMC-2025 
                             ECoG Video Analysis Competition. With advanced preprocessing, multiple feature 
                             extraction methods, and real-time visualization capabilities, we're ready to 
                             showcase cutting-edge neural decoding research.
                         </p>
-                        <div class="row g-3">
-                            <div class="col-md-4">
-                                <div class="text-center">
-                                    <i class="fas fa-medal mb-2" style="font-size: 2rem;"></i>
-                                    <h6>Academic Excellence</h6>
+                        
+                        <!-- Competition Metrics -->
+                        <div class="row g-4 mt-4">
+                            <div class="col-md-3">
+                                <div class="metric-card">
+                                    <div class="metric-icon">
+                                        <i class="fas fa-medal"></i>
+                                    </div>
+                                    <div class="metric-content">
+                                        <h6>Academic Excellence</h6>
+                                        <p class="metric-desc">Research Quality</p>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-md-4">
-                                <div class="text-center">
-                                    <i class="fas fa-code mb-2" style="font-size: 2rem;"></i>
-                                    <h6>Open Source</h6>
+                            <div class="col-md-3">
+                                <div class="metric-card">
+                                    <div class="metric-icon">
+                                        <i class="fas fa-code"></i>
+                                    </div>
+                                    <div class="metric-content">
+                                        <h6>Open Source</h6>
+                                        <p class="metric-desc">Reproducible</p>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-md-4">
-                                <div class="text-center">
-                                    <i class="fas fa-users mb-2" style="font-size: 2rem;"></i>
-                                    <h6>Collaborative</h6>
+                            <div class="col-md-3">
+                                <div class="metric-card">
+                                    <div class="metric-icon">
+                                        <i class="fas fa-users"></i>
+                                    </div>
+                                    <div class="metric-content">
+                                        <h6>Collaborative</h6>
+                                        <p class="metric-desc">Team Work</p>
+                                    </div>
                                 </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="metric-card">
+                                    <div class="metric-icon">
+                                        <i class="fas fa-rocket"></i>
+                                    </div>
+                                    <div class="metric-content">
+                                        <h6>Innovation</h6>
+                                        <p class="metric-desc">Cutting-Edge</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Competition Features -->
+        <div class="row g-4">
+            <div class="col-lg-4">
+                <div class="competition-feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h5>Advanced Neural Decoding</h5>
+                    <p>State-of-the-art machine learning models for real-time ECoG signal classification and brain state decoding.</p>
+                    <ul class="feature-list">
+                        <li><i class="fas fa-check text-success me-2"></i>Deep Learning Models</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Real-time Processing</li>
+                        <li><i class="fas fa-check text-success me-2"></i>High Accuracy</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <div class="competition-feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h5>Comprehensive Analysis</h5>
+                    <p>Multi-modal analysis pipeline with advanced preprocessing, feature extraction, and statistical analysis.</p>
+                    <ul class="feature-list">
+                        <li><i class="fas fa-check text-success me-2"></i>Signal Processing</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Feature Engineering</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Quality Control</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <div class="competition-feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-eye"></i>
+                    </div>
+                    <h5>Interactive Visualization</h5>
+                    <p>Real-time brain activity visualization with spatial mapping, temporal dynamics, and video synchronization.</p>
+                    <ul class="feature-list">
+                        <li><i class="fas fa-check text-success me-2"></i>3D Brain Maps</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Video Sync</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Interactive Charts</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Competition Timeline -->
+        <div class="row mt-5">
+            <div class="col-12">
+                <div class="competition-timeline">
+                    <h4 class="text-center mb-4">Competition Timeline</h4>
+                    <div class="timeline">
+                        <div class="timeline-item completed">
+                            <div class="timeline-marker">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="timeline-content">
+                                <h6>Data Analysis</h6>
+                                <p>Comprehensive ECoG data preprocessing and analysis</p>
+                                <span class="timeline-date">Completed</span>
+                            </div>
+                        </div>
+                        <div class="timeline-item completed">
+                            <div class="timeline-marker">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="timeline-content">
+                                <h6>Feature Extraction</h6>
+                                <p>Advanced feature engineering and model development</p>
+                                <span class="timeline-date">Completed</span>
+                            </div>
+                        </div>
+                        <div class="timeline-item active">
+                            <div class="timeline-marker">
+                                <i class="fas fa-play"></i>
+                            </div>
+                            <div class="timeline-content">
+                                <h6>Web Application</h6>
+                                <p>Interactive visualization and analysis platform</p>
+                                <span class="timeline-date">In Progress</span>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-marker">
+                                <i class="fas fa-trophy"></i>
+                            </div>
+                            <div class="timeline-content">
+                                <h6>Competition Submission</h6>
+                                <p>Final submission and presentation preparation</p>
+                                <span class="timeline-date">Upcoming</span>
                             </div>
                         </div>
                     </div>

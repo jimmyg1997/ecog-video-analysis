@@ -1,9 +1,0 @@
-# Additional requirements for Anatomical Atlas-Based Analysis (Approach 7)
-# Install these for full functionality of the new approach
-
-nilearn>=0.9.0
-nibabel>=3.2.0
-scikit-learn>=1.0.0
-
-# Installation command:
-# pip install -r requirements_atlas.txt
