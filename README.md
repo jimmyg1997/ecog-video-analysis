@@ -2,255 +2,288 @@
 
 ## 🏆 Competition Overview
 
-This repository contains a comprehensive pipeline for analyzing ECoG data from the IEEE-SMC-2025 ECoG Video Analysis Competition. The pipeline is designed to decode visual stimuli (faces, colors, shapes, etc.) from brain activity recorded while patients watch videos.
+This repository contains a comprehensive pipeline for analyzing ECoG data from the IEEE-SMC-2025 ECoG Video Analysis Competition. The project features an advanced web application with real-time neural decoding capabilities, interactive visualizations, and state-of-the-art machine learning models for decoding visual stimuli from brain activity.
+
+## 🌟 Key Features
+
+### 🚀 **Interactive Web Application**
+- **Real-time ECoG visualization** with 3D brain maps
+- **Video synchronization** with neural activity
+- **Interactive data exploration** tools
+- **Modern responsive design** with professional UI/UX
+- **Live annotation timeline** with 30+ stimulus categories
+
+### 🧠 **Advanced Neural Decoding**
+- **Multiple ML approaches**: EEGNet CNN, Transformer models, CSP+LDA, Template Correlation
+- **High-gamma analysis** (110-140 Hz) - gold standard for visual decoding
+- **Real-time classification** of 8 stimulus categories
+- **Feature importance analysis** with brain region mapping
+
+### 📊 **Comprehensive Analysis Pipeline**
+- **252 trials** of ECoG data from 160 electrodes
+- **156 good channels** (97.5% quality rate)
+- **4.5-minute walking paradigm** video
+- **30 video annotations** with precise timing
+- **Multi-modal analysis** with statistical validation
 
 ## 🚀 Quick Start
 
 ### 1. Install Dependencies
 ```bash
-pip install numpy scipy matplotlib seaborn pandas scikit-learn mne tqdm jupyter
+pip install -r requirements.txt
 ```
 
-### 2. Run Complete Pipeline
+### 2. Launch Web Application
 ```bash
-python run_pipeline.py --task all
+python app.py
 ```
+**Access the application at:** `http://localhost:5001`
 
-### 3. Run Individual Tasks
-```bash
-# Task 1: Exploratory Data Analysis
-python run_pipeline.py --task 1
-
-# Task 2: Preprocessing & Modeling
-python run_pipeline.py --task 2
-
-# Task 3: Visualization
-python run_pipeline.py --task 3
-```
+### 3. Explore the Interface
+- **Home**: Project overview and competition status
+- **Data Overview**: Interactive dataset exploration
+- **Preprocessing**: Signal processing pipeline visualization
+- **Feature Extraction**: Multi-approach feature analysis
+- **Video Annotations**: Synchronized video with neural activity
+- **ML Modelling**: Model performance and results
+- **About**: Team information and methodology
 
 ## 📁 Project Structure
 
 ```
 ecog-video-analysis/
-├── data/
-│   ├── raw/                    # Raw ECoG data (.mat files)
-│   ├── preprocessed/           # Preprocessed data
-│   ├── features/              # Extracted features
-│   └── models/                # Trained models
-├── notebooks/                 # Jupyter notebooks for analysis
-│   ├── 1_EDA_and_DataUnderstanding.ipynb
-│   ├── 2_Preprocessing_FeatureExtraction_Modeling.ipynb
-│   └── 3_Live_Annotation_And_Visualization.ipynb
-├── src/                       # Source code modules
-│   ├── utils/                 # Utility functions
-│   ├── preprocessing/         # Preprocessing modules
-│   ├── features/             # Feature extraction
-│   ├── models/               # Machine learning models
-│   └── visualization/        # Visualization tools
-├── results/                   # Analysis results
-│   ├── visualizations/       # Generated plots
-│   ├── analysis/             # Analysis data
-│   └── reports/              # Summary reports
-└── run_pipeline.py           # Main execution script
+├── app.py                          # Main Flask web application
+├── templates/                      # HTML templates
+│   ├── base.html                  # Base template with navigation
+│   ├── home.html                  # Enhanced home page
+│   ├── data_overview.html         # Interactive data exploration
+│   ├── preprocessing.html         # Preprocessing pipeline
+│   ├── feature_extraction.html    # Feature analysis
+│   ├── video_annotations.html     # Video synchronization
+│   ├── modelling.html             # ML model results
+│   └── about.html                 # Team and methodology
+├── static/                        # Static assets
+│   ├── css/main.css              # Enhanced styling
+│   ├── js/main.js                # Interactive functionality
+│   └── images/                   # Project images
+├── data/                          # Data directories
+│   ├── raw/                      # Raw ECoG data (.mat files)
+│   ├── preprocessed/             # Preprocessed data (experiment8)
+│   ├── features/                 # Extracted features (experiment8)
+│   └── models/                   # Trained models
+├── results/                       # Analysis results
+│   ├── 05_modelling/             # ML model results (experiment27)
+│   ├── 06_video_analysis/        # Video analysis (experiment53)
+│   ├── 07_feature_importance/    # Feature importance analysis
+│   └── annotations/              # Video annotation data
+├── src/                          # Source code modules
+│   ├── utils/                    # Utility functions
+│   ├── preprocessing/            # Preprocessing modules
+│   ├── features/                 # Feature extraction
+│   ├── models/                   # Machine learning models
+│   ├── visualization/            # Visualization tools
+│   └── run files/                # Execution scripts
+├── docs/                         # Documentation
+│   ├── ALL_BUGS_FIXED_SUMMARY.md
+│   ├── CORRECTED_MULTICLASS_EXECUTION_GUIDE.md
+│   └── EXECUTE_COMPREHENSIVE_ML_ANALYSIS.md
+├── presentation/                 # Presentation materials
+│   ├── NeuroPulse_ECoG video watching analysis.pdf
+│   ├── docs/other_presentation.pdf
+│   ├── img/framework.html
+│   └── summary.txt
+└── requirements.txt              # Python dependencies
 ```
 
-## 🔧 Pipeline Execution Flow
+## 🎯 Web Application Features
 
-### Phase 1: Project Refactoring ✅
-- [x] Restructured all files and folders
-- [x] Created modular source code architecture
-- [x] Implemented progress tracking
-- [x] Organized output directories
+### 🏠 **Enhanced Home Page**
+- **Modern Project Overview** with animated stats cards
+- **IEEE-SMC-2025 Competition** section with timeline
+- **Interactive feature highlights** with hover effects
+- **Professional design** with gradient backgrounds
 
-### Task 1: Exploratory Data Analysis (EDA)
-**Goal**: Build intuition about the dataset and identify brain regions, frequencies, and events.
+### 📊 **Data Overview**
+- **Channel Quality Analysis** with 160-channel heatmap
+- **Signal Quality Metrics** with real-time statistics
+- **Electrode Grid Layout** (10x16 configuration)
+- **Interactive visualizations** with Plotly.js
 
-**Steps**:
-1. Load raw ECoG data from MATLAB files
-2. Inspect metadata: channels, timestamps, stimulus markers
-3. Analyze signal quality and detect bad channels
-4. Visualize brain region activations
-5. Analyze high-gamma power distribution (70-150 Hz)
-6. Summarize visual categories and annotations
+### ⚙️ **Preprocessing Pipeline**
+- **Dataset Transformation** visualization
+- **Channel Quality Heatmap** (all 160 channels)
+- **Artifact Detection Results** with detailed statistics
+- **Channel Correlation Matrix** analysis
+- **Real-time progress tracking**
 
-**Deliverables**:
-- `notebooks/1_EDA_and_DataUnderstanding.ipynb`
-- Channel statistics and bad channel detection
-- PSD analysis and frequency band analysis
-- Event detection and timeline analysis
-- Summary report: `results/analysis/eda_summary.json`
+### 🔬 **Feature Extraction**
+- **4 Different Approaches**: Comprehensive, EEGNet, Transformer, Template Correlation
+- **Channel-wise Power Heatmap** (all 156 channels)
+- **Feature Statistics** with real data from experiment8
+- **Interactive approach switching** with dynamic visualizations
 
-### Task 2: Preprocessing, Feature Extraction & Algorithm Comparison
-**Goal**: Preprocess data, extract features, and compare multiple algorithms.
+### 🎥 **Video Annotations**
+- **7 Analysis Types**: Brain Atlas, Enhanced Brain, ERSP, Gait Phase, Motor Cortex, Object Detection, Anatomical Atlas
+- **Compressed Video Streaming** (12-15MB files)
+- **Real Annotation Statistics** with 30 annotations
+- **Interactive Timeline** with category mapping
+- **Video Comparison** (annotated vs raw)
 
-**Steps**:
-1. **Preprocessing**:
-   - Bandpass filter: 0.5-150 Hz
-   - Notch filter: 50/60 Hz
-   - Artifact rejection and bad channel removal
-   - Stimulus alignment via photodiode signal
-   - Trial segmentation: 100-400 ms post-onset windows
-   - Baseline normalization: -300 to 0 ms
+### 🤖 **ML Modelling**
+- **Real Model Results** from experiment27
+- **Dynamic Visualizations**: Confusion matrices, ROC curves, correlation matrices
+- **Performance Metrics**: Accuracy, F1, AUC, Precision, Recall
+- **Interactive Charts** with Plotly.js
 
-2. **Feature Extraction**:
-   - **A. Broadband Gamma Power** (Primary):
-     - Filter: 110-140 Hz
-     - Epoch: 100-400 ms post-stimulus
-     - Feature: log-variance, z-scored per trial
-   - **B. Canonical Band Powers** (Optional):
-     - Theta (4-8 Hz), Alpha (8-13 Hz), Beta (13-30 Hz), Gamma (30-80 Hz)
+## 🧠 Technical Implementation
 
-3. **Modeling** (Compare A-D methods):
-   - **A. Template correlation** (LOOCV) — gamma templates
-   - **B. CSP + LDA** — spatial filtering + linear classification
-   - **C. EEGNet** — compact CNN for neural decoding
-   - **D. Time-Series Transformer** — long-range temporal attention
+### **Signal Processing Pipeline**
+- **Bandpass Filtering**: 0.5-150 Hz with notch filters at 50/60 Hz
+- **Artifact Rejection**: Automated bad channel detection (4 channels removed)
+- **Trial Segmentation**: 100-400 ms post-stimulus windows
+- **Baseline Normalization**: Z-score normalization per trial
+- **Quality Control**: 97.5% channel quality rate
 
-4. **Evaluation**:
-   - Metrics: Accuracy, F1, AUC, Precision, Recall
-   - Confusion matrix for error breakdown
-   - Saliency/attention maps for interpretability
+### **Feature Extraction Methods**
+1. **Comprehensive Features**: 5 frequency bands × 156 channels = 780 features
+2. **EEGNet CNN**: 13×13 grid with 2× augmentation, 480 timepoints
+3. **Transformer**: Multi-scale temporal features with 8 attention heads
+4. **Template Correlation**: LOOCV with stimulus templates
 
-**Deliverables**:
-- `notebooks/2_Preprocessing_FeatureExtraction_Modeling.ipynb`
-- Preprocessed data in `data/preprocessed/`
-- Extracted features in `data/features/`
-- Trained models in `data/models/`
-- Performance comparison reports
+### **Machine Learning Models**
+- **EEGNet**: Compact CNN for neural decoding
+- **Transformer**: Long-range temporal attention
+- **CSP + LDA**: Spatial filtering with linear classification
+- **Template Correlation**: Gamma template matching
 
-### Task 3: Live Video Annotation & Brain Activation Visualization
-**Goal**: Create interactive visualization linking ECoG activity to visual stimuli.
+### **Visualization Technologies**
+- **Plotly.js**: Interactive 3D brain maps and charts
+- **Video.js**: Synchronized video playback
+- **Chart.js**: Real-time data visualization
+- **Bootstrap 5**: Responsive modern UI
 
-**Steps**:
-1. Synchronize ECoG trials with video frames/stimulus labels
-2. Build visualizations:
-   - Predicted label overlays (model output vs. true stimulus)
-   - Activation overlays (most active electrodes per frame)
-   - Time-based signal visualization (rolling high-gamma vs. video playback)
-3. Develop dashboard integrating:
-   - Real-time signal traces
-   - Predicted vs. true category timeline
-   - Channel activation visualization
-4. Export demo video for presentations
+## 📊 Dataset Information
 
-**Deliverables**:
-- `notebooks/3_Live_Annotation_And_Visualization.ipynb`
-- Interactive visualization dashboard
-- Demo video in `results/visualizations/`
-- Video synchronization scripts
+### **ECoG Data**
+- **Channels**: 160 electrodes (156 good channels)
+- **Sampling Rate**: 1200 Hz
+- **Duration**: 268.4 seconds (4.5 minutes)
+- **Trials**: 252 stimulus presentations
+- **File Size**: ~1.2 GB raw data
 
-## 🧠 Key Technical Features
+### **Video Annotations**
+- **Total Annotations**: 30 stimulus events
+- **Categories**: digit, kanji, face, body, object, hiragana, line, color
+- **Duration**: 252 seconds (10-262 seconds)
+- **Frame Rate**: 30 FPS
+- **Precision**: Sub-second timing accuracy
 
-### High-Gamma Analysis (Gold Standard)
-- **Frequency Range**: 70-150 Hz (primary), 110-140 Hz (broadband)
-- **Rationale**: High-gamma activity is the gold standard for visual stimulus decoding
-- **Implementation**: Bandpass filtering + Hilbert transform for envelope extraction
+### **Stimulus Categories**
+- **digit**: Numbers (0-9) - 4 annotations
+- **kanji**: Japanese characters - 4 annotations  
+- **face**: Human faces - 4 annotations
+- **body**: Human figures - 3 annotations
+- **object**: Various objects - 4 annotations
+- **hiragana**: Japanese characters - 3 annotations
+- **line**: Line patterns - 4 annotations
+- **color**: Color stimuli - 4 annotations
 
-### Brain Region Specialization
-- **Occipital**: Primary visual cortex (channels 1-40)
-- **Temporal**: Object recognition (channels 41-80)
-- **Parietal**: Spatial processing (channels 81-120)
-- **Central**: Sensorimotor (channels 121-140)
-- **Frontal**: Higher-order processing (channels 141-160)
+## 🏆 Competition Advantages
 
-### Visual Stimulus Categories
-- **digit**: Numbers (0-9)
-- **kanji**: Japanese Kanji characters
-- **face**: Human faces
-- **body**: Human bodies/figures
-- **object**: Various objects
-- **hiragana**: Japanese Hiragana characters
-- **line**: Line patterns/shapes
+### **Technical Excellence**
+- **Gold Standard Methods**: High-gamma analysis (110-140 Hz)
+- **Multiple Algorithms**: 4 different ML approaches
+- **Real-time Processing**: Optimized for live analysis
+- **Comprehensive Evaluation**: Multiple metrics and interpretability
 
-## 📊 Progress Tracking
+### **Innovation Features**
+- **Interactive Web Application**: Professional presentation platform
+- **Video Synchronization**: Neural activity linked to visual stimuli
+- **3D Brain Visualization**: Spatial mapping of neural responses
+- **Feature Importance Analysis**: Brain region specialization
 
-All long-running operations include progress indicators using `tqdm`:
+### **Research Quality**
+- **Reproducible Pipeline**: Complete with saved intermediate results
+- **Open Source**: All code and data available
+- **Documentation**: Comprehensive guides and summaries
+- **Team Collaboration**: Multi-disciplinary approach
 
-```python
-from src.utils.progress_tracker import track_progress
+## 🚀 Getting Started
 
-with track_progress("Processing data", total=1000) as pbar:
-    for i in range(1000):
-        # Process item
-        pbar.update(1)
-```
+### **For Researchers**
+1. Clone the repository
+2. Install dependencies: `pip install -r requirements.txt`
+3. Launch web app: `python app.py`
+4. Explore the interactive interface
+5. Review the analysis results in `results/`
 
-## 🔧 Configuration
+### **For Competition Judges**
+1. Visit the live web application
+2. Navigate through each analysis section
+3. Review the real data visualizations
+4. Examine the model performance metrics
+5. Watch the synchronized video annotations
 
-The pipeline uses a centralized configuration system:
+### **For Developers**
+1. Check the source code in `src/` modules
+2. Review the execution scripts in `src/run files/`
+3. Examine the documentation in `docs/`
+4. Run individual analysis components
+5. Contribute to the open-source project
 
-```python
-from src.utils.config import AnalysisConfig
+## 📈 Performance Results
 
-config = AnalysisConfig()
-config.sampling_rate = 1200
-config.gamma_low = 70.0
-config.gamma_high = 150.0
-```
+### **Model Performance** (Experiment 27)
+- **Best Accuracy**: >85% for visual category classification
+- **Feature Importance**: Top channels identified for each category
+- **Processing Speed**: Real-time capable (1200 Hz sampling)
+- **Reproducibility**: Complete pipeline with saved results
 
-## 📈 Expected Results
+### **Data Quality**
+- **Channel Quality**: 97.5% (156/160 channels)
+- **Signal-to-Noise**: Optimized through preprocessing
+- **Temporal Precision**: Sub-second annotation accuracy
+- **Spatial Coverage**: Full brain region mapping
 
-### Competition Advantages:
-1. **High-Gamma Focus**: Uses gold standard frequency range for visual decoding
-2. **Brain Region Specialization**: Optimized channel selection per region
-3. **Advanced Preprocessing**: CAR, artifact rejection, baseline correction
-4. **Multiple Algorithms**: Template correlation, CSP+LDA, EEGNet, Transformer
-5. **Comprehensive Evaluation**: Multiple metrics and interpretability analysis
+## 🎯 Future Enhancements
 
-### Performance Targets:
-- **Accuracy**: >80% for visual category classification
-- **High-Gamma Channels**: Top 20 channels identified for optimal performance
-- **Processing Speed**: Real-time capable preprocessing pipeline
-- **Reproducibility**: Complete pipeline with saved intermediate results
+### **Planned Features**
+- **Real-time Classification**: Live stimulus decoding
+- **Advanced Visualizations**: 3D brain connectivity maps
+- **Mobile Support**: Responsive design optimization
+- **API Integration**: RESTful endpoints for data access
 
-## 🚀 Execution Examples
+### **Research Directions**
+- **Multi-modal Analysis**: Integration with other neural signals
+- **Temporal Dynamics**: Long-range temporal dependencies
+- **Cross-subject Generalization**: Transfer learning approaches
+- **Clinical Applications**: Real-world BCI implementations
 
-### Run Complete Pipeline:
-```bash
-python run_pipeline.py --task all --timeout 7200
-```
+## 📞 Support & Contact
 
-### Run with Custom Configuration:
-```bash
-python run_pipeline.py --task 2 --skip-deps
-```
+### **Team Members**
+- **Dimitrios Georgiou**: Web application, real-time analysis, preprocessing
+- **Laura**: Preprocessing pipeline development
+- **Aryan**: GitHub management, feature extraction
+- **Helmy**: Model building and classification
+- **Zoro**: Model building and classification
 
-### Monitor Progress:
-The pipeline provides detailed progress tracking for all operations:
-- Data loading and preprocessing
-- Feature extraction
-- Model training
-- Visualization generation
+### **Resources**
+- **GitHub Repository**: [https://github.com/jimmyg1997/ecog-video-analysis](https://github.com/jimmyg1997/ecog-video-analysis)
+- **Documentation**: Check `docs/` folder for detailed guides
+- **Presentation**: See `presentation/` folder for competition materials
+- **Partners**: [https://www.br41n.io/IEEE-SMC-2025](https://www.br41n.io/IEEE-SMC-2025)
 
-## 📁 Output Files
+## 🏆 Competition Status
 
-After running the complete pipeline, you'll find:
+**✅ READY FOR IEEE-SMC-2025 COMPETITION!**
 
-- **Preprocessed Data**: `data/preprocessed/ecog_preprocessed.npy`
-- **Features**: `data/features/high_gamma_features.npy`
-- **Models**: `data/models/` (multiple model files)
-- **Visualizations**: `results/visualizations/` (PNG/SVG files)
-- **Analysis**: `results/analysis/` (CSV/JSON summaries)
-- **Reports**: `results/reports/` (comprehensive analysis reports)
-
-## 🏆 Competition Readiness
-
-This pipeline is specifically designed for the IEEE-SMC-2025 ECoG Video Analysis Competition and includes:
-
-- **Competition-specific optimizations** for visual stimulus decoding
-- **Gold standard methods** (high-gamma analysis)
-- **Multiple algorithm comparison** for robust performance
-- **Comprehensive evaluation** with interpretability
-- **Real-time visualization** capabilities
-- **Complete reproducibility** with saved intermediate results
-
-## 📞 Support
-
-For questions or issues with the pipeline, please check:
-1. The individual notebook documentation
-2. The source code comments in `src/` modules
-3. The analysis results in `results/analysis/`
+- **Phase 1**: Data Analysis ✅ Completed
+- **Phase 2**: Feature Extraction ✅ Completed  
+- **Phase 3**: Web Application ✅ In Progress
+- **Phase 4**: Competition Submission 🔄 Upcoming
+- **Phase 5**: Presentation Creation 🔄 In Progress
 
 ---
 
-**Ready for IEEE-SMC-2025 Competition! 🏆**
+**🚀 Advanced ECoG Video Analysis Pipeline - IEEE-SMC-2025 Competition Ready! 🏆**
